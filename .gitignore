@@ -1,0 +1,6 @@
+*.sh
+.vscode/
+__pycache__/
+.ipynb_checkpoints/
+
+Pruebas.ipynb
