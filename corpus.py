@@ -1,11 +1,12 @@
-import docx
+import os
 import nltk
+import util.file_manager as fm
 import re
+from util.doc2string import Document
 from nltk import word_tokenize
 
-class Document():
+class Corpus():
 
-  document = None
   string = None 
   tokens = None 
   words  = None 
@@ -13,39 +14,11 @@ class Document():
   token_ratio = None
 
   def __init__(self, path):
-    self.document = docx.Document(path)
-    self.string = self.build_string()
+    self.string = self.get_string(path)
     self.tokens = self.build_tokens()
     self.words  = self.remove_punctuation()
     self.types  = self.remove_duplicated()
     self.token_ratio = self.get_token_ratio()
-
-  def raw_full_text(self):
-    raw_full_text = []
-    for paragraph in self.document.paragraphs:
-        raw_full_text.append(paragraph.text)
-    return raw_full_text
-  
-  def trim_text(self, raw_text):
-    trimmed_text = []
-
-    for paragraph in raw_text:
-      if paragraph != '':
-          trimmed_text.append(paragraph)
-
-    return trimmed_text
-
-  
-  def merge_string(self, raw_text):
-    return ''.join(raw_text)
-
-  
-  def build_string(self):
-    return self.merge_string(
-      self.trim_text(
-        self.raw_full_text()
-      )
-    )
 
   def build_tokens(self):
     return word_tokenize(self.string)
@@ -67,4 +40,11 @@ class Document():
 
   def get_token_ratio(self):
     return self.token_count() / self.type_count()
+
+  def get_string(self, path):
+    if not fm.exists(path):
+      raise ValueError("Path do not exist: {}".format(path))
+
+    if fm.is_word(path):
+      return Document(path).string
 
