@@ -9,3 +9,6 @@ def file_extension(path):
 
 def is_word(path):
     return file_extension(path) in ('.doc', '.docx', '.odt')
+
+def is_presentation(path):
+    return file_extension(path) in ('.ppt', '.pptx', '.odf')

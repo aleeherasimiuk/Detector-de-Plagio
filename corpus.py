@@ -3,6 +3,7 @@ import nltk
 import util.file_manager as fm
 import re
 from util.doc2string import Document
+from util.ppt2string import Presentation
 from nltk import word_tokenize
 
 class Corpus():
@@ -47,4 +48,7 @@ class Corpus():
 
     if fm.is_word(path):
       return Document(path).string
+
+    if fm.is_presentation(path):
+      return Presentation(path).string
 
