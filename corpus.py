@@ -4,6 +4,7 @@ import util.file_manager as fm
 import re
 from util.doc2string import Document
 from util.ppt2string import Presentation
+from util.pdf2string import PDF
 from nltk import word_tokenize
 
 class Corpus():
@@ -51,4 +52,7 @@ class Corpus():
 
     if fm.is_presentation(path):
       return Presentation(path).string
+
+    if fm.is_pdf(path):
+      return PDF(path).string
 

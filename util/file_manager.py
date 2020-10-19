@@ -8,7 +8,10 @@ def file_extension(path):
   return ext
 
 def is_word(path):
-    return file_extension(path) in ('.doc', '.docx', '.odt')
+  return file_extension(path) in ('.doc', '.docx', '.odt')
 
 def is_presentation(path):
-    return file_extension(path) in ('.ppt', '.pptx', '.odf')
+  return file_extension(path) in ('.ppt', '.pptx', '.odf')
+
+def is_pdf(path):
+  return file_extension(path) == '.pdf'

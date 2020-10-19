@@ -66,5 +66,23 @@ class TestPresentation(unittest.TestCase):
     fake_path = 'unit_testing_documents/idontexist.docx'
     self.assertRaises(ValueError, self.corpus.get_string, fake_path)
 
+
+class TestPdf(unittest.TestCase):
+
+  corpus = Corpus('unit_testing_documents/lorem_ipsum.pdf')
+
+  def test_tokens_are_12176(self):
+    self.assertEqual(self.corpus.token_count(), 12176)
+
+  def test_words_are_10000(self):
+    self.assertEqual(self.corpus.word_count(), 10000)
+
+  def test_types_are_187(self):
+    self.assertEqual(self.corpus.type_count(), 187)
+
+  def test_if_not_exist(self):
+    fake_path = 'unit_testing_documents/idontexist.pdf'
+    self.assertRaises(ValueError, self.corpus.get_string, fake_path)
+
 if __name__ == '__main__':
     unittest.main()
