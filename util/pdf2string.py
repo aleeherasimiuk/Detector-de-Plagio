@@ -1,8 +1,9 @@
-from pdfminer.high_level import extract_text
+from util.other_docs import OtherDoc
 
-class PDF():
-
-  string = None
+class PDF(OtherDoc):
 
   def __init__(self, path):
-    self.string = extract_text(path)
+    super().__init__(path, '.pdf')
+  
+
+

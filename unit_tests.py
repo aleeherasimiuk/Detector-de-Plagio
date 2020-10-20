@@ -30,6 +30,22 @@ class TestFileManager(unittest.TestCase):
     self.assertTrue(fm.is_presentation(self.ppt_path))
 
 
+class TestDoc(unittest.TestCase):
+
+  corpus = Corpus('unit_testing_documents/lorem_ipsum.doc')
+
+  def test_tokens_are_12176(self):
+    self.assertEqual(self.corpus.token_count(), 12176)
+
+  def test_words_are_10000(self):
+    self.assertEqual(self.corpus.word_count(), 10000)
+
+  def test_types_are_187(self):
+    self.assertEqual(self.corpus.type_count(), 187)
+
+  def test_if_not_exist(self):
+    fake_path = 'unit_testing_documents/idontexist.doc'
+    self.assertRaises(ValueError, self.corpus.get_string, fake_path)
 
 class TestDocx(unittest.TestCase):
 
@@ -45,7 +61,7 @@ class TestDocx(unittest.TestCase):
     self.assertEqual(self.corpus.type_count(), 187)
 
   def test_if_not_exist(self):
-    fake_path = 'unit_testing_documents/idontexist.pptx'
+    fake_path = 'unit_testing_documents/idontexist.docx'
     self.assertRaises(ValueError, self.corpus.get_string, fake_path)
 
 
@@ -63,7 +79,7 @@ class TestPresentation(unittest.TestCase):
     self.assertEqual(self.corpus.type_count(), 187)
 
   def test_if_not_exist(self):
-    fake_path = 'unit_testing_documents/idontexist.docx'
+    fake_path = 'unit_testing_documents/idontexist.pptx'
     self.assertRaises(ValueError, self.corpus.get_string, fake_path)
 
 

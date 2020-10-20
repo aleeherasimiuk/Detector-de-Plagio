@@ -1,13 +1,35 @@
 import docx
+from util.file_manager import file_extension
+from util.other_docs import OtherDoc
+
 
 class Document():
 
+  type_manager = None
   document = None
   string = None
 
   def __init__(self, path):
-    self.document = docx.Document(path)
+    self.document = self.__get_document(path)
+    self.string = self.document.string
+
+  def __get_document(self, path):
+    if file_extension(path) == '.doc':
+      return Doc(path)
+    return Docx(path)
+
+
+class Docx():
+
+  string = None
+  document = None
+
+  def __init__(self, path):
+    self.document = self.read_document(path)
     self.string = self.build_string()
+
+  def read_document(self, path):
+    return docx.Document(path)
 
   def raw_full_text(self):
     raw_full_text = []
@@ -43,5 +65,13 @@ class Document():
       )
     )
 
-  
+
+class Doc(OtherDoc):
+
+  def __init__(self, path):
+    try:
+      super().__init__(path, '.doc')
+    except:
+      super().__init__(path, '.rtf')
+
 

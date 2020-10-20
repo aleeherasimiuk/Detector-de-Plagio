@@ -19,3 +19,7 @@ https://python-pptx.readthedocs.io/en/latest/
 ## Read PDF:
 
 https://pdfminersix.readthedocs.io/en/latest/
+
+## Read Doc - RTF
+
+https://textract.readthedocs.io/en/stable/
