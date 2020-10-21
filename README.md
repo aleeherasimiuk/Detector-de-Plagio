@@ -23,3 +23,8 @@ https://pdfminersix.readthedocs.io/en/latest/
 ## Read Doc - RTF
 
 https://textract.readthedocs.io/en/stable/
+
+
+## Logging:
+
+https://docs.python.org/3/howto/logging.html
