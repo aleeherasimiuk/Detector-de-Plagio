@@ -7,6 +7,7 @@ from util.ppt2string import Presentation
 from util.pdf2string import PDF
 from util.other_docs import OtherDoc
 from nltk import word_tokenize
+import util.log as log
 
 class Corpus():
 
@@ -22,6 +23,8 @@ class Corpus():
     self.words  = self.remove_punctuation()
     self.types  = self.remove_duplicated()
     self.token_ratio = self.get_token_ratio()
+
+    self.log_results(path)
 
   def build_tokens(self):
     return word_tokenize(self.string)
@@ -58,4 +61,7 @@ class Corpus():
       return PDF(path).string
 
     return OtherDoc(path).string
+
+  def log_results(self, path):
+    log.info('Document has been read succesfully -> {}\n\tWords: {}\n\tTokens: {}\n\tTypes: {}\n\tToken Ratio: {}'.format(fm.get_filename(path), len(self.words), len(self.tokens), len(self.types), self.token_ratio))
 

@@ -1,6 +1,9 @@
 import docx
 from util.file_manager import file_extension
+from util.file_manager import get_filename
 from util.other_docs import OtherDoc
+import util.log as log
+
 
 
 class Document():
@@ -25,6 +28,8 @@ class Docx():
   document = None
 
   def __init__(self, path):
+
+    log.debug('Trying to read: {}'.format(get_filename(path)))
     self.document = self.read_document(path)
     self.string = self.build_string()
 
@@ -69,9 +74,8 @@ class Docx():
 class Doc(OtherDoc):
 
   def __init__(self, path):
-    try:
-      super().__init__(path, '.doc')
-    except:
-      super().__init__(path, '.rtf')
+    log.debug('Trying to read: {}'.format(get_filename(path)))
+    super().__init__(path, '.doc')
+
 
 

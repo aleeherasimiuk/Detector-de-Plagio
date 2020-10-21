@@ -15,3 +15,7 @@ def is_presentation(path):
 
 def is_pdf(path):
   return file_extension(path) == '.pdf'
+
+def get_filename(path):
+  filename = os.path.basename(path)
+  return filename
