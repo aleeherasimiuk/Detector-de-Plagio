@@ -3,6 +3,7 @@ from util.file_manager import file_extension
 from util.file_manager import get_filename
 from util.other_docs import OtherDoc
 import util.log as log
+import re
 
 class Document():
 
@@ -48,25 +49,27 @@ class Docx():
           trimmed_text.append(paragraph)
 
     return trimmed_text
-
-  def separate_dots(self, string):
-
-    spaces_added = string.replace('.', '. ')
-    double_spaces_fixed = spaces_added.replace('  ', ' ')
-    return double_spaces_fixed
-
   
   def merge_string(self, raw_text):
     return ''.join(raw_text)
 
+
+  def separate_glued_words(self, string):
+    tokens = string.split(' ')
+    for i, token in enumerate(tokens):
+        if not re.search('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', token):
+            tokens[i] = tokens[i].replace('.', '. ')
+    return ' '.join(tokens)
+
   def build_string(self):
-    return self.separate_dots(
-      self.merge_string(
-        self.fix_void_paragraph(
-          self.raw_full_text()
+    return self.separate_glued_words(
+        self.merge_string(
+            self.fix_void_paragraph(
+                self.raw_full_text()
+            )
         )
-      )
     )
+    
 
 
 class Doc(OtherDoc):

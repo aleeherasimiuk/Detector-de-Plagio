@@ -21,12 +21,23 @@ class Corpus():
 
   def __init__(self, path):
     self.string = self.get_string(path)
+    self.clean_dataset()
     self.tokens = self.build_tokens()
     self.words  = self.remove_punctuation()
     self.types  = self.remove_duplicated()
     self.token_ratio = self.get_token_ratio()
 
     self.log_results(path)
+
+  def clean_dataset(self):
+    symbols = ['\t', '\n', 'l[pic]', '[pic]', '|', '•', '●', '']
+    for symbol in symbols:
+      self.string = self.string.replace(symbol, ' ')
+
+    self.remove_multiple_whitespaces()
+
+  def remove_multiple_whitespaces(self):
+    self.string = re.sub(' +', ' ', self.string)
 
   def build_tokens(self):
     return word_tokenize(self.string)

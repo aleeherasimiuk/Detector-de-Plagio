@@ -73,6 +73,7 @@ class TestDocx(unittest.TestCase):
     fake_path = 'unit_testing_documents/idontexist.docx'
     self.assertRaises(ValueError, self.corpus.get_string, fake_path)
 
+
 class TestRtf(unittest.TestCase):
 
   corpus = Corpus('unit_testing_documents/lorem_ipsum.rtf')
@@ -127,5 +128,4 @@ class TestPdf(unittest.TestCase):
     self.assertRaises(ValueError, self.corpus.get_string, fake_path)
 
 if __name__ == '__main__':
-    log.init_logger()
     unittest.main()
