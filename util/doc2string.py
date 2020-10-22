@@ -4,8 +4,6 @@ from util.file_manager import get_filename
 from util.other_docs import OtherDoc
 import util.log as log
 
-
-
 class Document():
 
   type_manager = None
@@ -72,10 +70,15 @@ class Docx():
 
 
 class Doc(OtherDoc):
-
   def __init__(self, path):
     log.debug('Trying to read: {}'.format(get_filename(path)))
     super().__init__(path, '.doc')
+
+
+class Rtf(OtherDoc):
+  def __init__(self, path):
+    log.debug('Trying to read: {}'.format(get_filename(path)))
+    super().__init__(path, '.rtf')
 
 
 

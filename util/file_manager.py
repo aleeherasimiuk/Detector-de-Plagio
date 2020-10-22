@@ -1,4 +1,5 @@
 import os
+import filetype
 
 def exists(path):
   return os.path.exists(path)
@@ -15,6 +16,10 @@ def is_presentation(path):
 
 def is_pdf(path):
   return file_extension(path) == '.pdf'
+
+def is_rtf(path):
+  kind = filetype.guess(path)
+  return kind and kind.extension == 'rtf'
 
 def get_filename(path):
   filename = os.path.basename(path)

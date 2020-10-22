@@ -5,9 +5,11 @@ import re
 from util.doc2string import Document
 from util.ppt2string import Presentation
 from util.pdf2string import PDF
+from util.doc2string import Rtf
 from util.other_docs import OtherDoc
 from nltk import word_tokenize
 import util.log as log
+from util.exceptions import InvalidDocument
 
 class Corpus():
 
@@ -45,11 +47,14 @@ class Corpus():
     return len(self.types)
 
   def get_token_ratio(self):
-    return self.token_count() / self.type_count()
+    return self.type_count() / self.token_count()
 
   def get_string(self, path):
     if not fm.exists(path):
       raise ValueError("Path do not exist: {}".format(path))
+
+    if fm.is_rtf(path):
+      return Rtf(path).string
 
     if fm.is_word(path):
       return Document(path).string
@@ -60,7 +65,7 @@ class Corpus():
     if fm.is_pdf(path):
       return PDF(path).string
 
-    return OtherDoc(path).string
+    raise InvalidDocument()
 
   def log_results(self, path):
     log.info('Document has been read succesfully -> {}\n\tWords: {}\n\tTokens: {}\n\tTypes: {}\n\tToken Ratio: {}'.format(fm.get_filename(path), len(self.words), len(self.tokens), len(self.types), self.token_ratio))

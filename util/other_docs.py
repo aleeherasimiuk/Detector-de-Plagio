@@ -11,15 +11,9 @@ class OtherDoc():
   def __init__(self, path, extension):
     try:
       self.string = self.read_document(path, extension)
-    except ShellError:
-      try:
-        log.warning('There was an error reading: {}. Trying to read that as .rtf file.'.format(get_filename(path)))
-        self.string = self.read_document(path, '.rtf')
-      except:
-        log.error('There was an error reading: {}, document will be ignored and an exception was thrown. Catch it!'.format(get_filename(path)))
-        raise InvalidDocument()
-      
-    
+    except:
+      log.error('There was an error reading: {}, document will be ignored and an exception was thrown. Catch it!'.format(get_filename(path)))
+      raise InvalidDocument()    
 
   def read_document(self, path, extension):
     return self.decode_text(self.extract_text(path, extension))
