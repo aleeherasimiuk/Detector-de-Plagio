@@ -4,7 +4,7 @@ __pycache__/
 .ipynb_checkpoints/
 
 Pruebas.ipynb
-
+test_lda.ipynb
 Enunciado.docx
 dataset/
 *.png
