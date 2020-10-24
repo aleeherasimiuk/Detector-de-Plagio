@@ -4,7 +4,7 @@ from util.file_manager import get_filename
 from textract.exceptions import ShellError
 from util.exceptions import InvalidDocument
 
-class OtherDoc():
+class GenericDocument():
 
   string = None
 

@@ -1,11 +1,13 @@
 import docx
 from util.file_manager import file_extension
 from util.file_manager import get_filename
-from util.other_docs import OtherDoc
+from util.generic_document import GenericDocument
+from util.data_cleaning import separate_glued_words
+from util.data_cleaning import merge_string
 import util.log as log
 import re
 
-class Document():
+class WordDocument():
 
   type_manager = None
   document = None
@@ -42,43 +44,25 @@ class Docx():
     return raw_full_text
   
   def fix_void_paragraph(self, raw_text):
-    trimmed_text = []
-
-    for paragraph in raw_text:
-      if paragraph != '':
-          trimmed_text.append(paragraph)
-
-    return trimmed_text
+    return [paragraph for paragraph in raw_text if paragraph != '']
   
-  def merge_string(self, raw_text):
-    return ''.join(raw_text)
-
-
-  def separate_glued_words(self, string):
-    tokens = string.split(' ')
-    for i, token in enumerate(tokens):
-        if not re.search('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', token):
-            tokens[i] = tokens[i].replace('.', '. ')
-    return ' '.join(tokens)
-
   def build_string(self):
-    return self.separate_glued_words(
-        self.merge_string(
-            self.fix_void_paragraph(
-                self.raw_full_text()
-            )
-        )
-    )
-    
+    raw_full_text = self.raw_full_text()
+    fixed_void_paragraph = self.fix_void_paragraph(raw_full_text)
+    merged_string = merge_string(fixed_void_paragraph)
+    separated_glued_words = separate_glued_words(merged_string)
+
+    return separated_glued_words
 
 
-class Doc(OtherDoc):
+
+class Doc(GenericDocument):
   def __init__(self, path):
     log.debug('Trying to read: {}'.format(get_filename(path)))
     super().__init__(path, '.doc')
 
 
-class Rtf(OtherDoc):
+class Rtf(GenericDocument):
   def __init__(self, path):
     log.debug('Trying to read: {}'.format(get_filename(path)))
     super().__init__(path, '.rtf')

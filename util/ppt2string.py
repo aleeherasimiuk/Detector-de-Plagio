@@ -1,4 +1,5 @@
 from pptx import Presentation as ppt
+from util.data_cleaning import separate_glued_words, remove_multiple_whitespaces, merge_string
 
 class Presentation():
 
@@ -22,17 +23,12 @@ class Presentation():
     return raw_text
 
   def trim_text(self, raw_text):
-    trimmed_text = raw_text.replace('.', '. ')
-    trimmed_text = trimmed_text.replace('  ', ' ')
-    return trimmed_text
-
-  def merge_string(self, raw_text):
-    return ''.join(raw_text)
+    raw_text = separate_glued_words(raw_text)
+    return remove_multiple_whitespaces(raw_text)
 
   def build_string(self):
     return self.trim_text(
-      self.merge_string(
-        self.raw_full_text()
-      )
+        merge_string(
+            self.raw_full_text()
+        )
     )
-                

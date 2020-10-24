@@ -2,16 +2,17 @@ import os
 import nltk
 import util.file_manager as fm
 import re
-from util.doc2string import Document
+from util.doc2string import WordDocument
 from util.ppt2string import Presentation
 from util.pdf2string import PDF
 from util.doc2string import Rtf
-from util.other_docs import OtherDoc
+from util.generic_document import GenericDocument
 from nltk import word_tokenize
 import util.log as log
 from util.exceptions import InvalidDocument
+from util.data_cleaning import delete_symbols, remove_multiple_whitespaces
 
-class Corpus():
+class Document():
 
   string = None 
   tokens = None 
@@ -30,14 +31,8 @@ class Corpus():
     self.log_results(path)
 
   def clean_dataset(self):
-    symbols = ['\t', '\n', 'l[pic]', '[pic]', '|', '•', '●', '', '\x0c']
-    for symbol in symbols:
-      self.string = self.string.replace(symbol, ' ')
-
-    self.remove_multiple_whitespaces()
-
-  def remove_multiple_whitespaces(self):
-    self.string = re.sub(' +', ' ', self.string)
+    self.string = delete_symbols(self.string)
+    self.string = remove_multiple_whitespaces(self.string)
 
   def build_tokens(self):
     return word_tokenize(self.string)
@@ -62,13 +57,14 @@ class Corpus():
 
   def get_string(self, path):
     if not fm.exists(path):
+      log.error('There was an error reading: {}, path do not exist. An exception was thrown. Catch it!'.format(fm.get_filename(path)))
       raise ValueError("Path do not exist: {}".format(path))
 
     if fm.is_rtf(path):
       return Rtf(path).string
 
     if fm.is_word(path):
-      return Document(path).string
+      return WordDocument(path).string
 
     if fm.is_presentation(path):
       return Presentation(path).string

@@ -1,6 +1,6 @@
-from util.other_docs import OtherDoc
+from util.generic_document import GenericDocument
 
-class PDF(OtherDoc):
+class PDF(GenericDocument):
 
   def __init__(self, path):
     super().__init__(path, '.pdf')
