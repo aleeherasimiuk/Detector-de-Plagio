@@ -30,7 +30,7 @@ class Corpus():
     self.log_results(path)
 
   def clean_dataset(self):
-    symbols = ['\t', '\n', 'l[pic]', '[pic]', '|', '•', '●', '']
+    symbols = ['\t', '\n', 'l[pic]', '[pic]', '|', '•', '●', '', '\x0c']
     for symbol in symbols:
       self.string = self.string.replace(symbol, ' ')
 
