@@ -7,6 +7,11 @@ Pruebas.ipynb
 test_lda.ipynb
 Enunciado.docx
 dataset/
+labeled_dataset/
+lda_gensim.ipynb
+test_lda.ipynb
+*.swp
+temas.txt
 *.png
 *.log
 *.csv
