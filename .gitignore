@@ -6,7 +6,7 @@ __pycache__/
 Pruebas.ipynb
 test_lda.ipynb
 Enunciado.docx
-dataset/
+unlabeled_dataset/
 labeled_dataset/
 lda_gensim.ipynb
 test_lda.ipynb
