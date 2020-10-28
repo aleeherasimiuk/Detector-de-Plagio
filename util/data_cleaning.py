@@ -3,6 +3,7 @@ from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from nltk.corpus import stopwords
 from es_lemmatizer import lemmatize as __lemmatize
 import es_core_news_sm
+import util.log as log
 
 nlp = es_core_news_sm.load()
 nlp.add_pipe(__lemmatize, after="tagger")
@@ -41,17 +42,21 @@ def stem_string(string):
 
 
 def preprocess(text):
-  return [word.lemma_ for word in lemmatize(text.lower()) if is_word(word.lemma_)]
+  return [word.lemma_ for word in tokenize_lemmatize_and_tag(text.lower()) if is_word(word)]
 
 
-def is_word(word):
-  return word not in stop_words() and re.match('\w', word) and len(word) > 3 and not is_url(word) and not is_email(word) and not is_legajo(word) and not is_course(word) and not is_date(word)
+def is_word(doc):
+  #return word not in stop_words() and re.match('\w', word) and len(word) > 3 and not is_url(word) and not is_email(word) and not is_legajo(word) and not is_course(word) and not is_date(word)
+  return doc.lemma_ not in stop_words() and re.match('^[a-z]+$', doc.lemma_) and doc.pos_ not in ('PROPN', 'PUNCT')
 
-def lemmatize(text):
+def tokenize_lemmatize_and_tag(text):
   return nlp(text)
 
 def lemmatize_word(word):
-  return lemmatize(word)[0].lemma_
+  return (tokenize_lemmatize_and_tag(word)[0]).lemma_
+
+def pos_word(word):
+  return tokenize_lemmatize_and_tag(word)[0].pos_
 
 
 def stop_words():

@@ -162,7 +162,7 @@ class DataCleaning(unittest.TestCase):
     self.assertEqual(test_merged_string, self.merged_string)
 
   def test_lemmatize(self):
-    self.assertEqual(lemmatize('clientes')[0].lemma_, 'cliente')
+    self.assertEqual(lemmatize_word('clientes'), 'cliente')
 
   def test_is_email(self):
     self.assertTrue(is_email('jhondoe@example.com'))
@@ -178,6 +178,7 @@ class DataCleaning(unittest.TestCase):
 
   def test_is_date(self):
     self.assertTrue(is_date('31/12/2020'))
+
 
 if __name__ == '__main__':
     unittest.main()
