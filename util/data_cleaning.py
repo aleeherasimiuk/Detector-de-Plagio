@@ -1,5 +1,16 @@
 import re
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
+from nltk.corpus import stopwords
+from es_lemmatizer import lemmatize as __lemmatize
+import es_core_news_sm
+
+nlp = es_core_news_sm.load()
+nlp.add_pipe(__lemmatize, after="tagger")
+stemmer = SnowballStemmer('spanish')
+__stop_words = stopwords.words('spanish')
+__stop_words.extend(['mejor', 'primer', 'igual', 'principal', 'total', 'segun', 'según', 'iguales', 'describa', 'hernan', 'borre', 'profesor', 'alumno', 'universidad', 'facultad','regional', 'buenos', 'aires', 'utn'])
+  
+
 
 def delete_symbols(string):
   symbols = ['\t', '\n', 'l[pic]', '[pic]', '|', '•', '●', '', '\x0c']
@@ -16,7 +27,7 @@ def remove_multiple_whitespaces(string):
 def separate_glued_words(string):
   tokens = string.split(' ')
   for i, token in enumerate(tokens):
-      if not re.search('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', token):
+      if not is_url(token):
           tokens[i] = tokens[i].replace('.', '. ')
   return ' '.join(tokens)
   
@@ -25,11 +36,43 @@ def merge_string(splitted_string):
   return ''.join(splitted_string)
 
 
-stemmer = SnowballStemmer('spanish')
-
 def stem_string(string):
   return stemmer.stem(string)
 
 
-def lemmatize_string(text):
-  return WordNetLemmatizer().lemmatize(text, pos='n')
+def preprocess(text):
+  return [word.lemma_ for word in lemmatize(text.lower()) if is_word(word.lemma_)]
+
+
+def is_word(word):
+  return word not in stop_words() and re.match('\w', word) and len(word) > 3 and not is_url(word) and not is_email(word) and not is_legajo(word) and not is_course(word) and not is_date(word)
+
+def lemmatize(text):
+  return nlp(text)
+
+def lemmatize_word(word):
+  return lemmatize(word)[0].lemma_
+
+
+def stop_words():
+ return __stop_words
+
+
+def is_email(token):
+  return re.search('[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', token)
+
+
+def is_url(token):
+  return re.search('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', token)
+
+
+def is_legajo(token):
+  return re.search('[0-9]{3}\.\s?[0-9]{3}-[0-9]', token)
+
+
+def is_date(token):
+  return re.search('[0-9]{2}/[0-9]{2}/[0-9]{4}', token)
+
+
+def is_course(token):
+  return re.search('k[0-9]{4}', token)

@@ -4,7 +4,7 @@ from util.doc2string import WordDocument
 from util.ppt2string import Presentation
 from document import Document
 import util.log as log
-from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, separate_glued_words, merge_string
+from util.data_cleaning import *
 
 log.init_logger()
 
@@ -160,6 +160,24 @@ class DataCleaning(unittest.TestCase):
   def test_merge_string(self):
     test_merged_string = merge_string(self.splitted_string)
     self.assertEqual(test_merged_string, self.merged_string)
+
+  def test_lemmatize(self):
+    self.assertEqual(lemmatize('clientes')[0].lemma_, 'cliente')
+
+  def test_is_email(self):
+    self.assertTrue(is_email('jhondoe@example.com'))
+
+  def test_is_legajo(self):
+    self.assertTrue(is_legajo('146.566-1'))
+
+  def test_is_legajo_typo(self):
+    self.assertTrue(is_legajo('167. 251-4'))
+
+  def test_is_url(self):
+    self.assertTrue(is_url('https://google.com'))
+
+  def test_is_date(self):
+    self.assertTrue(is_date('31/12/2020'))
 
 if __name__ == '__main__':
     unittest.main()
