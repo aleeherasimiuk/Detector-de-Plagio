@@ -28,3 +28,36 @@ https://textract.readthedocs.io/en/stable/
 ## Logging:
 
 https://docs.python.org/3/howto/logging.html
+
+## POS Tagging Spacy & NLTK
+
+https://www.i2tutorials.com/parts-of-speech-pos-tagging-with-nltk-and-spacy-using-python/
+
+
+## Naive Bayes implementation
+
+https://medium.com/analytics-vidhya/naive-bayes-classifier-for-text-classification-556fabaf252b#:~:text=The%20Naive%20Bayes%20classifier%20is,time%20and%20less%20training%20data
+
+
+## Firebase
+
+https://firebase.google.com/docs/firestore/quickstart
+
+## Count Vectorizer
+
+https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer.build_analyzer
+
+
+
+## Tokenizing Sentences
+
+https://pythonspot.com/tokenizing-words-and-sentences-with-nltk/
+
+
+## Name entity recognition:
+
+https://www.geeksforgeeks.org/python-named-entity-recognition-ner-using-spacy/?ref=rp
+
+
+
+
