@@ -42,7 +42,17 @@ def stem_string(string):
 
 
 def is_word(doc):
+  if type(doc) == str:
+    doc = nlp(doc)[0]
   return doc.lemma_ not in stop_words() and re.match('^[a-z]+$', doc.lemma_) and doc.pos_ not in ('PROPN', 'PUNCT')
+
+
+def is_name(doc):
+  return doc.pos_ == 'PROPN'
+
+
+def tag_words(text):
+  return nlp(text)
 
 
 def tokenize_lemmatize_and_tag(text):

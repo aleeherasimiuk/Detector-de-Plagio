@@ -10,25 +10,33 @@ from util.generic_document import GenericDocument
 from nltk import word_tokenize
 import util.log as log
 from util.exceptions import InvalidDocument
-from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word
+from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word, tag_words, is_name
+from util.count_vectorizer import MyCountVectorizer
 
 class Document():
 
   string = None 
   tokens = None 
   words  = None 
-  types  = None 
-  token_ratio = None
-  preprocessed_string = None
+  types  = None
+  tagged = [] 
+  token_ratio                = None
+  lemmatized_string          = None
+  stemmed_string             = None
+  simple_preprocessed_string = None 
 
-  def __init__(self, path):
+  named_entities = []
+
+  def __init__(self, path, preprocess = True):
     self.string = self.get_string(path)
     self.clean_dataset()
     self.tokens = self.build_tokens()
     self.words  = self.remove_punctuation()
     self.types  = self.remove_duplicated()
     self.token_ratio = self.get_token_ratio()
-    self.preprocessed_string = self.preprocess()
+    
+    if preprocess:
+      self.preprocess()
 
     self.log_results(path)
 
@@ -58,7 +66,34 @@ class Document():
     return self.type_count() / self.token_count()
 
   def preprocess(self):
-    return [word.lemma_ for word in tokenize_lemmatize_and_tag(self.string.lower()) if is_word(word)]
+    self.lemmatized_string = self.lemmatized_preprocessing()
+    self.stemmed_string = self.stemmed_preprocessing()
+    self.simple_preprocessed_string = self.simple_preprocessing()
+    self.tagged = tag_words(self.string.lower())
+    self.named_entities = self.name_entity_recognition()
+
+
+#  def preprocess(self):
+#    return [self.process_word(word) for word in tokenize_lemmatize_and_tag(self.string.lower()) if is_word(word)]
+
+#def process_word(self, word):
+#   return word.lemma_
+
+
+  def lemmatized_preprocessing(self):
+    vectorizer = MyCountVectorizer(lemmatize=True, stem=False)
+    return vectorizer.analyze(self.string)
+
+  def stemmed_preprocessing(self):
+    vectorizer = MyCountVectorizer(lemmatize=True, stem=True)
+    return vectorizer.analyze(self.string)
+
+  def simple_preprocessing(self):
+    vectorizer = MyCountVectorizer(lemmatize=False, stem=False)
+    return vectorizer.analyze(self.string)
+
+  def name_entity_recognition(self):
+    return [word for word in self.tagged if is_name(word)]
 
   def get_string(self, path):
     if not fm.exists(path):

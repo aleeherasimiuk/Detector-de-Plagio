@@ -44,7 +44,7 @@ class TestFileManager(unittest.TestCase):
 
 class TestDoc(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.doc')
+  document = Document('unit_testing_documents/lorem_ipsum.doc', preprocess=False)
 
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -61,7 +61,7 @@ class TestDoc(unittest.TestCase):
 
 class TestDocx(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.docx')
+  document = Document('unit_testing_documents/lorem_ipsum.docx', preprocess=False)
 
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -79,7 +79,7 @@ class TestDocx(unittest.TestCase):
 
 class TestRtf(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.rtf')
+  document = Document('unit_testing_documents/lorem_ipsum.rtf', preprocess=False)
 
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -97,7 +97,7 @@ class TestRtf(unittest.TestCase):
 
 class TestPresentation(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.pptx')
+  document = Document('unit_testing_documents/lorem_ipsum.pptx', preprocess=False)
   
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -115,7 +115,7 @@ class TestPresentation(unittest.TestCase):
 
 class TestPdf(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.pdf')
+  document = Document('unit_testing_documents/lorem_ipsum.pdf', preprocess=False)
 
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -183,13 +183,13 @@ class DataCleaning(unittest.TestCase):
 
 
 class TestCountVectorizer(unittest.TestCase):
-  string = 'Juan fue a comprar zanahorias y cebollas'
+  string = 'Juan fue a comprar mandarinas y cebollas'
 
   vectorizer = MyCountVectorizer(lemmatize=True, stem = False, stop_words = stop_words())
 
   def test_vectorizer(self):
     result = self.vectorizer.analyze(self.string)
-    self.assertEqual(result, ['juan', 'comprar', 'zanahoria', 'cebolla'])
+    self.assertEqual(result, ['comprar', 'mandarina', 'cebolla'])
 
 
 class TestFirebase(unittest.TestCase):
