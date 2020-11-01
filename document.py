@@ -10,7 +10,7 @@ from util.generic_document import GenericDocument
 from nltk import word_tokenize
 import util.log as log
 from util.exceptions import InvalidDocument
-from util.data_cleaning import delete_symbols, remove_multiple_whitespaces
+from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word
 
 class Document():
 
@@ -19,6 +19,7 @@ class Document():
   words  = None 
   types  = None 
   token_ratio = None
+  preprocessed_string = None
 
   def __init__(self, path):
     self.string = self.get_string(path)
@@ -27,6 +28,7 @@ class Document():
     self.words  = self.remove_punctuation()
     self.types  = self.remove_duplicated()
     self.token_ratio = self.get_token_ratio()
+    self.preprocessed_string = self.preprocess()
 
     self.log_results(path)
 
@@ -54,6 +56,9 @@ class Document():
 
   def get_token_ratio(self):
     return self.type_count() / self.token_count()
+
+  def preprocess(self):
+    return [word.lemma_ for word in tokenize_lemmatize_and_tag(self.string.lower()) if is_word(word)]
 
   def get_string(self, path):
     if not fm.exists(path):

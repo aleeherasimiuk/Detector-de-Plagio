@@ -5,6 +5,7 @@ from util.ppt2string import Presentation
 from document import Document
 import util.log as log
 from util.data_cleaning import *
+from util.count_vectorizer import MyCountVectorizer
 
 log.init_logger()
 
@@ -178,6 +179,17 @@ class DataCleaning(unittest.TestCase):
 
   def test_is_date(self):
     self.assertTrue(is_date('31/12/2020'))
+
+
+class TestCountVectorizer(unittest.TestCase):
+  string = 'Juan fue a comprar zanahorias y cebollas'
+
+  vectorizer = MyCountVectorizer(lemmatize=True, stem = False, stop_words = stop_words())
+
+  def test_vectorizer(self):
+    result = self.vectorizer.analyze(self.string)
+    log.info(dir(result))
+    self.assertEqual(result, ['juan', 'comprar', 'zanahoria', 'cebolla'])
 
 
 if __name__ == '__main__':
