@@ -7,10 +7,10 @@ from util.ppt2string import Presentation
 from util.pdf2string import PDF
 from util.doc2string import Rtf
 from util.generic_document import GenericDocument
-from nltk import word_tokenize
+from nltk import word_tokenize, sent_tokenize
 import util.log as log
 from util.exceptions import InvalidDocument
-from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word, tag_words, is_name
+from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word, tag_words, ner
 from util.count_vectorizer import MyCountVectorizer
 
 class Document():
@@ -23,8 +23,9 @@ class Document():
   token_ratio                = None
   lemmatized_string          = None
   stemmed_string             = None
-  simple_preprocessed_string = None 
+  simple_preprocessed_string = None
 
+  sentences = [] 
   named_entities = []
 
   def __init__(self, path, preprocess = True):
@@ -34,6 +35,7 @@ class Document():
     self.words  = self.remove_punctuation()
     self.types  = self.remove_duplicated()
     self.token_ratio = self.get_token_ratio()
+    self.sentences = self.build_sentences()
     
     if preprocess:
       self.preprocess()
@@ -46,6 +48,9 @@ class Document():
 
   def build_tokens(self):
     return word_tokenize(self.string)
+
+  def build_sentences(self):
+    return sent_tokenize(self.string)
 
   def remove_punctuation(self):
     return [word.lower() for word in self.tokens if re.search("\w", word)]
@@ -93,7 +98,11 @@ class Document():
     return vectorizer.analyze(self.string)
 
   def name_entity_recognition(self):
-    return [word for word in self.tagged if is_name(word)]
+    entities = []
+    for sentence in self.sentences:
+      entities.extend(ner(sentence))
+
+    return entities
 
   def get_string(self, path):
     if not fm.exists(path):

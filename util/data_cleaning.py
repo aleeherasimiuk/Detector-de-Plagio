@@ -1,4 +1,5 @@
 import re
+import nltk
 from nltk.stem import WordNetLemmatizer, SnowballStemmer
 from nltk.corpus import stopwords
 from es_lemmatizer import lemmatize as __lemmatize
@@ -10,11 +11,10 @@ nlp.add_pipe(__lemmatize, after="tagger")
 stemmer = SnowballStemmer('spanish')
 __stop_words = stopwords.words('spanish')
 __stop_words.extend(['mejor', 'primer', 'igual', 'principal', 'total', 'segun', 'según', 'iguales', 'describa', 'hernan', 'borre', 'profesor', 'alumno', 'universidad', 'facultad','regional', 'buenos', 'aires', 'utn'])
-  
 
 
 def delete_symbols(string):
-  symbols = ['\t', '\n', 'l[pic]', '[pic]', '|', '•', '●', '', '\x0c']
+  symbols = ['\t', '\n', 'l[pic]', '[pic]', '|', '•', '●', '', '\x0c', '\u200b']
   for symbol in symbols:
     string = string.replace(symbol, ' ')
 
@@ -40,15 +40,22 @@ def merge_string(splitted_string):
 def stem_string(string):
   return stemmer.stem(string)
 
-
 def is_word(doc):
   if type(doc) == str:
     doc = nlp(doc)[0]
-  return doc.lemma_ not in stop_words() and re.match('^[a-z]+$', doc.lemma_) and doc.pos_ not in ('PROPN', 'PUNCT')
+  return doc.lemma_ not in stop_words() and match_word(doc.lemma_) and doc.pos_ not in ('PROPN', 'PUNCT')
 
 
 def is_name(doc):
   return doc.pos_ == 'PROPN'
+
+
+def match_word(word):
+  return re.match('^[a-z]+$', word)
+
+def ner(sent):
+  #is_name(doc) and match_word(doc.lemma_) and doc.lemma_ not in stop_words()
+  return [ent.text for ent in nlp(sent).ents if ent.label_ == 'PER' and ent.lemma_ not in stop_words()]
 
 
 def tag_words(text):
