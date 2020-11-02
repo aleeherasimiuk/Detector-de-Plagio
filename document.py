@@ -17,18 +17,27 @@ from multiprocessing import Process, Value
 
 class Document():
 
-  string = None 
-  tokens = None 
-  words  = None 
-  types  = None
-  tagged = [] 
-  token_ratio                = None
-  lemmatized_string          = None
-  stemmed_string             = None
-  simple_preprocessed_string = None
+  title    = None
+  string   = None 
+  tokens   = None 
+  words    = None 
+  types    = None
+  bigrams  = None
+  trigrams = None
+  token_ratio         = None
+  lemmatized_string   = None
+  lemmatized_bigrams  = None
+  lemmatized_trigrams = None
+  stemmed_string      = None
+  stemmed_bigrams     = None
+  stemmed_trigrams    = None
+  simple_preprocessed_string   = None
+  simple_preprocessed_bigrams  = None
+  simple_preprocessed_trigrams = None
 
-  sentences = [] 
-  named_entities = []
+  tagged          = [] 
+  sentences       = [] 
+  named_entities  = []
 
   def __init__(self, path, preprocess = True):
     self.string = self.get_string(path)
@@ -38,6 +47,7 @@ class Document():
     self.types  = self.remove_duplicated()
     self.token_ratio = self.get_token_ratio()
     self.sentences = self.build_sentences()
+    self.title = self.get_title(path)
     
     if preprocess:
       self.preprocess()
@@ -73,10 +83,19 @@ class Document():
     return self.type_count() / self.token_count()
 
   def preprocess(self):
-    self.lemmatized_string = self.lemmatized_preprocessing()
-    self.stemmed_string = self.stemmed_preprocessing()
-    self.simple_preprocessed_string = self.simple_preprocessing()
-    self.named_entities = self.name_entity_recognition()
+    self.lemmatized_string            = self.lemmatized_preprocessing()
+    self.stemmed_string               = self.stemmed_preprocessing()
+    self.simple_preprocessed_string   = self.simple_preprocessing()
+    self.named_entities               = self.name_entity_recognition(include_title=True)
+
+    self.bigrams                      = self.make_bigrams(self.tokens)
+    self.lemmatized_bigrams           = self.make_bigrams(self.lemmatized_string)
+    self.stemmed_bigrams              = self.make_bigrams(self.stemmed_string)
+    self.simple_preprocessed_bigrams  = self.make_bigrams(self.simple_preprocessed_string)
+    self.trigrams                     = self.make_trigrams(self.tokens)
+    self.lemmatized_trigrams          = self.make_trigrams(self.lemmatized_string)
+    self.stemmed_trigrams             = self.make_trigrams(self.stemmed_string)
+    self.simple_preprocessed_trigrams = self.make_trigrams(self.simple_preprocessed_string)
 
 
   def lemmatized_preprocessing(self):
@@ -91,11 +110,24 @@ class Document():
     vectorizer = MyCountVectorizer(lemmatize=False, stem=False)
     return vectorizer.analyze(self.string)
 
-  def name_entity_recognition(self):
+  def name_entity_recognition(self, include_title = False):
     entities = []
     for sentence in self.sentences:
       entities.extend(ner(sentence))
+
+    if include_title:
+      entities.extend(ner(self.title.replace('_', ' ').replace('-', ' ')))
+
     return entities
+
+  def make_bigrams(self, tokens):
+    return list(nltk.bigrams(tokens))
+
+  def make_trigrams(self, tokens):
+    return list(nltk.trigrams(tokens))
+
+  def get_title(self, path):
+    return fm.get_filename(path).split('.')[0]
 
   def get_string(self, path):
     if not fm.exists(path):
