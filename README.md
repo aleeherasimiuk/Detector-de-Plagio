@@ -59,5 +59,12 @@ https://pythonspot.com/tokenizing-words-and-sentences-with-nltk/
 https://www.geeksforgeeks.org/python-named-entity-recognition-ner-using-spacy/?ref=rp
 
 
+## Multiprocessing
+
+https://svitla.com/blog/parallel-computing-and-multiprocessing-in-python
+https://stackoverflow.com/questions/20664695/how-do-i-convert-a-multiprocessor-manager-list-to-a-pure-python-list
+https://medium.com/@lih.verma/multi-processing-in-python-process-vs-pool-5caf0f67eb2b
+https://docs.python.org/3/library/multiprocessing.html
+
 
 
