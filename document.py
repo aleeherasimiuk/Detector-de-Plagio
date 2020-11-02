@@ -10,8 +10,10 @@ from util.generic_document import GenericDocument
 from nltk import word_tokenize, sent_tokenize
 import util.log as log
 from util.exceptions import InvalidDocument
-from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word, tag_words, ner
+from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word, ner
 from util.count_vectorizer import MyCountVectorizer
+import multiprocessing
+from multiprocessing import Process, Value
 
 class Document():
 
@@ -74,15 +76,7 @@ class Document():
     self.lemmatized_string = self.lemmatized_preprocessing()
     self.stemmed_string = self.stemmed_preprocessing()
     self.simple_preprocessed_string = self.simple_preprocessing()
-    self.tagged = tag_words(self.string.lower())
     self.named_entities = self.name_entity_recognition()
-
-
-#  def preprocess(self):
-#    return [self.process_word(word) for word in tokenize_lemmatize_and_tag(self.string.lower()) if is_word(word)]
-
-#def process_word(self, word):
-#   return word.lemma_
 
 
   def lemmatized_preprocessing(self):
@@ -101,7 +95,6 @@ class Document():
     entities = []
     for sentence in self.sentences:
       entities.extend(ner(sentence))
-
     return entities
 
   def get_string(self, path):

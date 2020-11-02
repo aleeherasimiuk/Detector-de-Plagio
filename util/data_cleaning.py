@@ -57,11 +57,6 @@ def ner(sent):
   #is_name(doc) and match_word(doc.lemma_) and doc.lemma_ not in stop_words()
   return [ent.text for ent in nlp(sent).ents if ent.label_ == 'PER' and ent.lemma_ not in stop_words()]
 
-
-def tag_words(text):
-  return nlp(text)
-
-
 def tokenize_lemmatize_and_tag(text):
   return nlp(text)
 
