@@ -24,3 +24,6 @@ def is_rtf(path):
 def get_filename(path):
   filename = os.path.basename(path)
   return filename
+
+def delete_file(path):
+  os.remove(path)

@@ -14,16 +14,19 @@ from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, toke
 from util.count_vectorizer import MyCountVectorizer
 import multiprocessing
 from multiprocessing import Process, Value
+from util.exceptions import DoubleSource
 
 class Document():
 
   title    = None
+  topic    = None
   string   = None 
   tokens   = None 
   words    = None 
   types    = None
   bigrams  = None
   trigrams = None
+  initialized         = False
   token_ratio         = None
   lemmatized_string   = None
   lemmatized_bigrams  = None
@@ -39,7 +42,40 @@ class Document():
   sentences       = [] 
   named_entities  = []
 
-  def __init__(self, path, preprocess = True):
+
+  def __init__(self, path = None, dictionary = None, preprocess = True):
+
+    if path and dictionary:
+      raise DoubleSource()
+
+    if path:
+      self.from_file(path, preprocess)
+      self.initalized = True 
+
+    if dictionary:
+      self.from_dict(dictionary)
+      self.initalized = True 
+
+  def from_dict(self, dict):
+    topic     = dict['topic']
+    string    = dict['string']
+    bigrams   = dict['bigrams']
+    trigrams  = dict['trigrams']
+    sentences = dict['sentences']
+    title     = dict['document_title']
+    stemmed_string      = dict['stemmed_text']
+    named_entities      = dict['named_entities']
+    stemmed_bigrams     = dict['stemmed_bigrams']
+    lemmatized_string   = dict['lemmatized_text']
+    stemmed_trigrams    = dict['stemmed_trigrams']
+    lemmatized_trigams  = dict['lemmatized_tigrams']
+    lemmatized_bigrams  = dict['lemmatized_bigrams']
+    simple_preprocessed_string   = dict['simple_preprocessed']
+    simple_preprocessed_bigrams  = dict['simple_preprocessed_bigrams']
+    simple_preprocessed_trigrams = dict['simple_preprocessed_trigrams']
+  
+
+  def from_file(self, path, preprocess=True):
     self.string = self.get_string(path)
     self.clean_dataset()
     self.tokens = self.build_tokens()
@@ -150,4 +186,9 @@ class Document():
 
   def log_results(self, path):
     log.info('Document has been read succesfully -> {}\n\tWords: {}\n\tTokens: {}\n\tTypes: {}\n\tToken Ratio: {}'.format(fm.get_filename(path), len(self.words), len(self.tokens), len(self.types), self.token_ratio))
+
+
+  def get_topic(self):
+    topic if topic else 'Unknown'
+
 

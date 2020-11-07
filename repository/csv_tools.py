@@ -1,4 +1,8 @@
 import pandas as pd
+import util.file_manager as fm
+
+def save_dataframe(dataframe, path):
+  dataframe.to_csv(path)
 
 def get_dataframe(path):
   return pd.read_csv(path)
@@ -20,5 +24,9 @@ def get_data(path):
       document[column] = serie[column]
 
   return dictionary
+
+
+def delete_dataframe(path):
+  fm.delete_file(path)
 
     

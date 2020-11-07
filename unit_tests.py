@@ -7,6 +7,9 @@ import util.log as log
 from util.data_cleaning import *
 from util.count_vectorizer import MyCountVectorizer
 from repository.firebase_admin import *
+from repository.csv_tools import *
+import pandas as pd
+import numpy as np
 
 log.init_logger()
 
@@ -44,7 +47,7 @@ class TestFileManager(unittest.TestCase):
 
 class TestDoc(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.doc', preprocess=False)
+  document = Document(path='unit_testing_documents/lorem_ipsum.doc', preprocess=False)
 
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -61,7 +64,7 @@ class TestDoc(unittest.TestCase):
 
 class TestDocx(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.docx', preprocess=False)
+  document = Document(path='unit_testing_documents/lorem_ipsum.docx', preprocess=False)
 
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -79,7 +82,7 @@ class TestDocx(unittest.TestCase):
 
 class TestRtf(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.rtf', preprocess=False)
+  document = Document(path='unit_testing_documents/lorem_ipsum.rtf', preprocess=False)
 
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -97,7 +100,7 @@ class TestRtf(unittest.TestCase):
 
 class TestPresentation(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.pptx', preprocess=False)
+  document = Document(path='unit_testing_documents/lorem_ipsum.pptx', preprocess=False)
   
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -115,7 +118,7 @@ class TestPresentation(unittest.TestCase):
 
 class TestPdf(unittest.TestCase):
 
-  document = Document('unit_testing_documents/lorem_ipsum.pdf', preprocess=False)
+  document = Document(path='unit_testing_documents/lorem_ipsum.pdf', preprocess=False)
 
   def test_tokens_are_12176(self):
     self.assertEqual(self.document.token_count(), 12176)
@@ -216,6 +219,27 @@ class TestFirebase(unittest.TestCase):
     self.fb.delete_document('TestDocument2')
     self.assertFalse(self.fb.document_exists('TestDocument1'))
     self.assertFalse(self.fb.document_exists('TestDocument2'))
+
+
+class TestCSV(unittest.TestCase):
+
+  array1 = np.zeros(10)
+  array2 = np.ones(10)
+
+  dataframe = pd.DataFrame({'array1': array1, 'array2': array2})
+  
+  def test_save_dataframe_into_csv(self):
+    save_dataframe(self.dataframe, 'test.csv')
+    self.assertTrue(fm.exists('test.csv'))
+
+    loaded_dataframe = get_dataframe('test.csv')
+    self.assertEqual(loaded_dataframe.loc[0]['array1'], self.array1.all())
+    self.assertEqual(loaded_dataframe.loc[0]['array2'], self.array2.all())
+
+    delete_dataframe('test.csv')
+    self.assertFalse(fm.exists('test.csv'))
+
+
 
 if __name__ == '__main__':
     unittest.main()
