@@ -1,3 +1,4 @@
+import module_fix
 import unittest
 from repository.firebase_admin import *
 

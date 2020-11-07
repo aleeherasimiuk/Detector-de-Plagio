@@ -1,3 +1,4 @@
+import module_fix
 import unittest
 import pandas as pd
 import numpy as np
@@ -20,6 +21,10 @@ class TestCSV(unittest.TestCase):
 
     delete_dataframe('test.csv')
     self.assertFalse(fm.exists('test.csv'))
+
+
+  def test_will_fail(self):
+    self.assertEqual(1,2)
 
 
 if __name__ == '__main__':
