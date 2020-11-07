@@ -1,5 +1,6 @@
 import pandas as pd
 import util.file_manager as fm
+from document import Document
 
 def save_dataframe(dataframe, path):
   dataframe.to_csv(path)
@@ -30,3 +31,6 @@ def delete_dataframe(path):
   fm.delete_file(path)
 
     
+def get_documents(path):
+  documents_dictionary = get_data(path)
+  return [Document(dictionary = documents_dictionary[d]) for d in documents_dictionary]

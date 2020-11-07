@@ -15,6 +15,7 @@ from util.count_vectorizer import MyCountVectorizer
 import multiprocessing
 from multiprocessing import Process, Value
 from util.exceptions import DoubleSource
+import ujson
 
 class Document():
 
@@ -57,22 +58,26 @@ class Document():
       self.initalized = True 
 
   def from_dict(self, dict):
-    topic     = dict['topic']
-    string    = dict['string']
-    bigrams   = dict['bigrams']
-    trigrams  = dict['trigrams']
-    sentences = dict['sentences']
-    title     = dict['document_title']
-    stemmed_string      = dict['stemmed_text']
-    named_entities      = dict['named_entities']
-    stemmed_bigrams     = dict['stemmed_bigrams']
-    lemmatized_string   = dict['lemmatized_text']
-    stemmed_trigrams    = dict['stemmed_trigrams']
-    lemmatized_trigams  = dict['lemmatized_tigrams']
-    lemmatized_bigrams  = dict['lemmatized_bigrams']
-    simple_preprocessed_string   = dict['simple_preprocessed']
-    simple_preprocessed_bigrams  = dict['simple_preprocessed_bigrams']
-    simple_preprocessed_trigrams = dict['simple_preprocessed_trigrams']
+    self.topic     = self.__value(dict,'topic')
+    self.string    = self.__value(dict,'string')
+    self.bigrams   = dict['tokens_bigrams']
+    self.trigrams  = dict['tokens_trigrams']
+    self.sentences = dict['sentences']
+    self.title     = self.__value(dict,'document_title')
+    self.stemmed_string      = self.__value(dict,'stemmed_text')
+    self.named_entities      = dict['named_entities']
+    self.lemmatized_string   = self.__value(dict,'lemmatized_text')
+    self.stemmed_bigrams     = dict['stemmed_bigrams']
+    self.stemmed_trigrams    = dict['stemmed_trigrams']
+    self.lemmatized_trigams  = dict['lemmatized_trigrams']
+    self.lemmatized_bigrams  = dict['lemmatized_bigrams']
+    self.simple_preprocessed_string   = self.__value(dict,'simple_preprocessed')
+    self.simple_preprocessed_bigrams  = dict['simple_preprocessed_bigrams']
+    self.simple_preprocessed_trigrams = dict['simple_preprocessed_trigrams']
+
+  
+  def __value(self, dict, key):
+    return ujson.loads(dict[key].replace("'", '"')) if dict[key][0] == '[' else dict[key]
   
 
   def from_file(self, path, preprocess=True):
