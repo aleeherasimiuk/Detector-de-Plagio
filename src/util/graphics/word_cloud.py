@@ -6,7 +6,7 @@ from util.data_cleaning import stop_words
 
 def show_word_cloud(model, rows, columns):
   
-  cols = [color for name, color in mcolors.TABLEAU_COLORS.items()]
+  cols = [color for name, color in mcolors.TABLEAU_COLORS.items()] * 2
 
   cloud = WordCloud(stopwords=stop_words(),
                     background_color='white',
@@ -17,9 +17,9 @@ def show_word_cloud(model, rows, columns):
                     color_func=lambda *args, **kwargs: cols[i],
                     prefer_horizontal=1.0)
 
-  topics = model.show_topics(formatted=False)
+  topics = model.show_topics(num_topics = -1, formatted=False)
 
-  fig, axes = plt.subplots(rows, columns, figsize=(20, 15), sharex=True, sharey=True)
+  fig, axes = plt.subplots(rows, columns, figsize=(20, 10), sharex=True, sharey=True)
 
   for i, ax in enumerate(axes.flatten()):
     fig.add_subplot(ax)
