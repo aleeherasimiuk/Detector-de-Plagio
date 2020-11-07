@@ -67,4 +67,8 @@ https://medium.com/@lih.verma/multi-processing-in-python-process-vs-pool-5caf0f6
 https://docs.python.org/3/library/multiprocessing.html
 
 
+## Triangle
+
+https://gist.github.com/tboggs/8778945
+http://blog.bogatron.net/blog/2014/02/02/visualizing-dirichlet-distributions/
 
