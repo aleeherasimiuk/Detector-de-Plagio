@@ -6,8 +6,15 @@ class MyCountVectorizer(CountVectorizer):
   lemmatizer = None
   stemmer = None
 
-  def __init__(self, lemmatize = True, stem = False, stop_words = stop_words()):
-    super().__init__(min_df=1, stop_words=stop_words)
+  def __init__(self, lemmatize = True, stem = False, stop_words = stop_words(), preprocess = True):
+    if preprocess:
+      super().__init__(min_df=1, stop_words=stop_words)
+    else:
+      super().__init__(min_df=1, stop_words=stop_words, preprocessor=' '.join, tokenizer = None)
+      stem = False
+      lemmatize = False
+
+    
     self.lemmatizer = lemmatize_word if lemmatize else self.nothing
     self.stemmer = stem_string if stem else self.nothing
 
