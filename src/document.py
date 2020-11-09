@@ -10,7 +10,7 @@ from util.generic_document import GenericDocument
 from nltk import word_tokenize, sent_tokenize
 import util.log as log
 from util.exceptions import InvalidDocument
-from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word, ner
+from util.data_cleaning import delete_symbols, remove_multiple_whitespaces, tokenize_lemmatize_and_tag, is_word, ner, is_useful_sentence
 from util.count_vectorizer import MyCountVectorizer
 import multiprocessing
 from multiprocessing import Process, Value
@@ -38,6 +38,7 @@ class Document():
   simple_preprocessed_string   = None
   simple_preprocessed_bigrams  = None
   simple_preprocessed_trigrams = None
+  preprocessed_sentences       = None 
 
   tagged          = [] 
   sentences       = [] 
@@ -62,7 +63,7 @@ class Document():
     self.string    = self.__value(dict,'string')
     self.bigrams   = dict['tokens_bigrams']
     self.trigrams  = dict['tokens_trigrams']
-    self.sentences = dict['sentences']
+    self.sentences = self.__value(dict, 'sentences')
     self.title     = self.__value(dict,'document_title')
     self.stemmed_string      = self.__value(dict,'stemmed_text')
     self.named_entities      = dict['named_entities']
@@ -128,6 +129,7 @@ class Document():
     self.stemmed_string               = self.stemmed_preprocessing()
     self.simple_preprocessed_string   = self.simple_preprocessing()
     self.named_entities               = self.name_entity_recognition(include_title=True)
+    self.preprocessed_sentences       = self.preprocess_sentences()
 
     self.bigrams                      = self.make_bigrams(self.tokens)
     self.lemmatized_bigrams           = self.make_bigrams(self.lemmatized_string)
@@ -138,6 +140,11 @@ class Document():
     self.stemmed_trigrams             = self.make_trigrams(self.stemmed_string)
     self.simple_preprocessed_trigrams = self.make_trigrams(self.simple_preprocessed_string)
 
+
+  def preprocess_sentences(self):
+    vectorizer = MyCountVectorizer(lemmatize= True, stem = False)
+    sents = [' '.join(vectorizer.analyze(sentence)) for sentence in self.sentences]
+    return list(filter(is_useful_sentence, sents))
 
   def lemmatized_preprocessing(self):
     vectorizer = MyCountVectorizer(lemmatize=True, stem=False)

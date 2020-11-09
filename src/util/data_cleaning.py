@@ -46,6 +46,10 @@ def is_word(doc):
   return doc.lemma_ not in stop_words() and match_word(doc.lemma_) and doc.pos_ not in ('PROPN', 'PUNCT')
 
 
+def is_useful_sentence(sentence):
+  tokens = nltk.word_tokenize(sentence)
+  return len(tokens) > 3
+
 def is_name(doc):
   return doc.pos_ == 'PROPN'
 
