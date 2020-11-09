@@ -61,20 +61,20 @@ class Document():
   def from_dict(self, dict):
     self.topic     = self.__value(dict,'topic')
     self.string    = self.__value(dict,'string')
-    self.bigrams   = dict['tokens_bigrams']
-    self.trigrams  = dict['tokens_trigrams']
+    self.bigrams   = eval(dict['tokens_bigrams'])
+    self.trigrams  = eval(dict['tokens_trigrams'])
     self.sentences = self.__value(dict, 'sentences')
     self.title     = self.__value(dict,'document_title')
     self.stemmed_string      = self.__value(dict,'stemmed_text')
-    self.named_entities      = dict['named_entities']
+    self.named_entities      = eval(dict['named_entities'])
     self.lemmatized_string   = self.__value(dict,'lemmatized_text')
-    self.stemmed_bigrams     = dict['stemmed_bigrams']
-    self.stemmed_trigrams    = dict['stemmed_trigrams']
-    self.lemmatized_trigams  = dict['lemmatized_trigrams']
-    self.lemmatized_bigrams  = dict['lemmatized_bigrams']
+    self.stemmed_bigrams     = eval(dict['stemmed_bigrams'])
+    self.stemmed_trigrams    = eval(dict['stemmed_trigrams'])
+    self.lemmatized_trigams  = eval(dict['lemmatized_trigrams'])
+    self.lemmatized_bigrams  = eval(dict['lemmatized_bigrams'])
     self.simple_preprocessed_string   = self.__value(dict,'simple_preprocessed')
-    self.simple_preprocessed_bigrams  = dict['simple_preprocessed_bigrams']
-    self.simple_preprocessed_trigrams = dict['simple_preprocessed_trigrams']
+    self.simple_preprocessed_bigrams  = eval(dict['simple_preprocessed_bigrams'])
+    self.simple_preprocessed_trigrams = eval(dict['simple_preprocessed_trigrams'])
 
   
   def __value(self, dict, key):

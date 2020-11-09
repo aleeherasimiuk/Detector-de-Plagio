@@ -36,7 +36,6 @@ def separate_glued_words(string):
 def merge_string(splitted_string):
   return ''.join(splitted_string)
 
-
 def stem_string(string):
   return stemmer.stem(string)
 

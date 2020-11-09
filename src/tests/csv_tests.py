@@ -23,9 +23,5 @@ class TestCSV(unittest.TestCase):
     self.assertFalse(fm.exists('test.csv'))
 
 
-  def test_will_fail(self):
-    self.assertEqual(1,2)
-
-
 if __name__ == '__main__':
     unittest.main()
