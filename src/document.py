@@ -15,7 +15,6 @@ from util.count_vectorizer import MyCountVectorizer
 import multiprocessing
 from multiprocessing import Process, Value
 from util.exceptions import DoubleSource
-import ujson
 
 class Document():
 
@@ -59,27 +58,23 @@ class Document():
       self.initalized = True 
 
   def from_dict(self, dict):
-    self.topic     = self.__value(dict,'topic')
-    self.string    = self.__value(dict,'string')
+    self.topic     = dict['topic']
+    self.string    = dict['string']
     self.bigrams   = eval(dict['tokens_bigrams'])
     self.trigrams  = eval(dict['tokens_trigrams'])
-    self.sentences = self.__value(dict, 'sentences')
-    self.title     = self.__value(dict,'document_title')
-    self.stemmed_string      = self.__value(dict,'stemmed_text')
+    self.sentences = eval(dict[ 'sentences'])
+    self.title     = dict['document_title']
+    self.stemmed_string      = eval(dict['stemmed_text'])
     self.named_entities      = eval(dict['named_entities'])
-    self.lemmatized_string   = self.__value(dict,'lemmatized_text')
+    self.lemmatized_string   = eval(dict['lemmatized_text'])
     self.stemmed_bigrams     = eval(dict['stemmed_bigrams'])
     self.stemmed_trigrams    = eval(dict['stemmed_trigrams'])
     self.lemmatized_trigams  = eval(dict['lemmatized_trigrams'])
     self.lemmatized_bigrams  = eval(dict['lemmatized_bigrams'])
-    self.simple_preprocessed_string   = self.__value(dict,'simple_preprocessed')
+    self.simple_preprocessed_string   = eval(dict['simple_preprocessed'])
     self.simple_preprocessed_bigrams  = eval(dict['simple_preprocessed_bigrams'])
     self.simple_preprocessed_trigrams = eval(dict['simple_preprocessed_trigrams'])
-
-  
-  def __value(self, dict, key):
-    return ujson.loads(dict[key].replace("'", '"')) if dict[key][0] == '[' else dict[key]
-  
+    self.preprocessed_sentences       = eval(dict['preprocessed_sentences'])
 
   def from_file(self, path, preprocess=True):
     self.string = self.get_string(path)

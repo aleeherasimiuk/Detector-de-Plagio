@@ -11,6 +11,7 @@ class TestDictionaryProcessing(unittest.TestCase):
     'tokens_bigrams': "[('word1','word2'), ('word2','word3'), ('word3','word4'), ('word4','word5')]",
     'tokens_trigrams': "[('word1','word2', 'word3'), ('word3', 'word4', 'word5'), ('word4', 'word5', 'word6'), ('word6','word7', 'word8')]",
     'sentences': "['this is a sentence', 'this is another sentence']",
+    'preprocessed_sentences': "['this is a sentence', 'this is another sentence']",
     'document_title': 'this is a title',
     'stemmed_text': "['word1', 'word2']",
     'lemmatized_text': "['word1', 'word2']",
@@ -74,6 +75,8 @@ class TestDictionaryProcessing(unittest.TestCase):
   def test_simple_preprocessed_trigrams(self):
     self.assertEqual(self.document.simple_preprocessed_trigrams, [('word1','word2', 'word3'), ('word3', 'word4', 'word5'), ('word4', 'word5', 'word6'), ('word6','word7', 'word8')])
 
+  def test_preprocessed_sentences(self):
+     self.assertEqual(self.document.preprocessed_sentences, ['this is a sentence', 'this is another sentence'])
 
 if __name__ == '__main__':
     unittest.main()
