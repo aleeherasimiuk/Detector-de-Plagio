@@ -26,6 +26,7 @@ class Document():
   types    = None
   bigrams  = None
   trigrams = None
+  paragraphs          = None
   initialized         = False
   token_ratio         = None
   lemmatized_string   = None
@@ -77,7 +78,7 @@ class Document():
     self.preprocessed_sentences       = eval(dict['preprocessed_sentences'])
 
   def from_file(self, path, preprocess=True):
-    self.string = self.get_string(path)
+    self.string, self.paragraphs = self.get_text(path)
     self.clean_dataset()
     self.tokens = self.build_tokens()
     self.words  = self.remove_punctuation()
@@ -94,6 +95,9 @@ class Document():
   def clean_dataset(self):
     self.string = delete_symbols(self.string)
     self.string = remove_multiple_whitespaces(self.string)
+
+    self.paragraphs = [delete_symbols(paragraph) for paragraph in self.paragraphs]
+    self.paragraphs = [remove_multiple_whitespaces(paragraph) for paragraph in self.paragraphs]
 
   def build_tokens(self):
     return word_tokenize(self.string)
@@ -172,22 +176,29 @@ class Document():
   def get_title(self, path):
     return fm.get_filename(path).split('.')[0]
 
-  def get_string(self, path):
+  def get_text(self, path):
+
+    document = None
+
     if not fm.exists(path):
       log.error('There was an error reading: {}, path do not exist. An exception was thrown. Catch it!'.format(fm.get_filename(path)))
       raise ValueError("Path do not exist: {}".format(path))
 
     if fm.is_rtf(path):
-      return Rtf(path).string
+      document = Rtf(path)
+      return (document.string, document.paragraphs)
 
     if fm.is_word(path):
-      return WordDocument(path).string
+      document = WordDocument(path)
+      return (document.string, document.paragraphs)
 
     if fm.is_presentation(path):
-      return Presentation(path).string
+      document = Presentation(path)
+      return (document.string, document.paragraphs)
 
     if fm.is_pdf(path):
-      return PDF(path).string
+      document = PDF(path)
+      return (document.string, document.paragraphs)
 
     raise InvalidDocument()
 
@@ -196,6 +207,6 @@ class Document():
 
 
   def get_topic(self):
-    topic if topic else 'Unknown'
+    return topic if topic else 'Unknown'
 
 

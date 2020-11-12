@@ -5,10 +5,14 @@ class Presentation():
 
   presentation = None
   string = None
+  paragraphs = []
+  raw_text = None
 
   def __init__(self, path):
     self.presentation = ppt(path)
-    self.string = self.build_string()
+    self.raw_text = self.raw_full_text()
+    self.string = self.build_string(self.raw_text)
+    self.paragraphs = self.get_paragraphs(self.raw_text)
 
   def raw_full_text(self):
     raw_text = []
@@ -19,16 +23,23 @@ class Presentation():
           for paragraph in shape.text_frame.paragraphs:
               for child in paragraph.runs: ## Text run object. Corresponds to a child element in a paragraph.
                   raw_text.append(child.text)
-
+                
     return raw_text
 
   def trim_text(self, raw_text):
     raw_text = separate_glued_words(raw_text)
     return remove_multiple_whitespaces(raw_text)
 
-  def build_string(self):
+  def build_string(self, raw_text):
     return self.trim_text(
-        merge_string(
-            self.raw_full_text()
-        )
+        merge_string(raw_text)
     )
+
+  def get_paragraphs(self, raw_text):
+    paragraphs = []
+    for paragraph in raw_text:
+      paragraphs.append(remove_multiple_whitespaces(separate_glued_words(paragraph)))
+
+    return paragraphs
+
+

@@ -21,7 +21,10 @@ class TestDoc(unittest.TestCase):
 
   def test_if_not_exist(self):
     fake_path = 'unit_testing_documents/idontexist.doc'
-    self.assertRaises(ValueError, self.document.get_string, fake_path)
+    self.assertRaises(ValueError, self.document.get_text, fake_path)
+
+  def test_paragraphs(self):
+    self.assertEqual(len(self.document.paragraphs), 113)
 
 class TestDocx(unittest.TestCase):
 
@@ -38,7 +41,10 @@ class TestDocx(unittest.TestCase):
 
   def test_if_not_exist(self):
     fake_path = 'unit_testing_documents/idontexist.docx'
-    self.assertRaises(ValueError, self.document.get_string, fake_path)
+    self.assertRaises(ValueError, self.document.get_text, fake_path)
+
+  def test_paragraphs(self):
+    self.assertEqual(len(self.document.paragraphs), 113)
 
 
 class TestRtf(unittest.TestCase):
@@ -56,7 +62,10 @@ class TestRtf(unittest.TestCase):
 
   def test_if_not_exist(self):
     fake_path = 'unit_testing_documents/idontexist.rtf'
-    self.assertRaises(ValueError, self.document.get_string, fake_path)
+    self.assertRaises(ValueError, self.document.get_text, fake_path)
+
+  def test_paragraphs(self):
+    self.assertEqual(len(self.document.paragraphs), 113)
 
 
 class TestPresentation(unittest.TestCase):
@@ -74,7 +83,10 @@ class TestPresentation(unittest.TestCase):
 
   def test_if_not_exist(self):
     fake_path = 'unit_testing_documents/idontexist.pptx'
-    self.assertRaises(ValueError, self.document.get_string, fake_path)
+    self.assertRaises(ValueError, self.document.get_text, fake_path)
+
+  def test_paragraphs(self):
+    self.assertEqual(len(self.document.paragraphs), 113)
 
 
 class TestPdf(unittest.TestCase):
@@ -92,7 +104,10 @@ class TestPdf(unittest.TestCase):
 
   def test_if_not_exist(self):
     fake_path = 'unit_testing_documents/idontexist.pdf'
-    self.assertRaises(ValueError, self.document.get_string, fake_path)
+    self.assertRaises(ValueError, self.document.get_text, fake_path)
+
+  def test_paragraphs(self):
+    self.assertEqual(len(self.document.paragraphs), 199) # No hay forma de traer parrafos completos
 
 
 if __name__ == '__main__':
