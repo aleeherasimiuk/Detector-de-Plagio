@@ -35,6 +35,7 @@ class Document():
   stemmed_string      = None
   stemmed_bigrams     = None
   stemmed_trigrams    = None
+  preprocessed_paragraphs      = None
   simple_preprocessed_string   = None
   simple_preprocessed_bigrams  = None
   simple_preprocessed_trigrams = None
@@ -65,6 +66,7 @@ class Document():
     self.trigrams  = eval(dict['tokens_trigrams'])
     self.sentences = eval(dict[ 'sentences'])
     self.title     = dict['document_title']
+    self.paragraphs          = eval(dict['paragraphs'])
     self.stemmed_string      = eval(dict['stemmed_text'])
     self.named_entities      = eval(dict['named_entities'])
     self.lemmatized_string   = eval(dict['lemmatized_text'])
@@ -76,6 +78,7 @@ class Document():
     self.simple_preprocessed_bigrams  = eval(dict['simple_preprocessed_bigrams'])
     self.simple_preprocessed_trigrams = eval(dict['simple_preprocessed_trigrams'])
     self.preprocessed_sentences       = eval(dict['preprocessed_sentences'])
+    self.preprocessed_paragraphs      = eval(dict['preprocessed_paragraphs'])
 
   def from_file(self, path, preprocess=True):
     self.string, self.paragraphs = self.get_text(path)
@@ -129,6 +132,7 @@ class Document():
     self.simple_preprocessed_string   = self.simple_preprocessing()
     self.named_entities               = self.name_entity_recognition(include_title=True)
     self.preprocessed_sentences       = self.preprocess_sentences()
+    self.preprocessed_paragraphs      = self.preprocessed_paragraphs()
 
     self.bigrams                      = self.make_bigrams(self.tokens)
     self.lemmatized_bigrams           = self.make_bigrams(self.lemmatized_string)
@@ -144,6 +148,11 @@ class Document():
     vectorizer = MyCountVectorizer(lemmatize= True, stem = False)
     sents = [' '.join(vectorizer.analyze(sentence)) for sentence in self.sentences]
     return list(filter(is_useful_sentence, sents))
+
+  def preprocessed_paragraphs(self):
+    vectorizer = MyCountVectorizer(lemmatize= True, stem = False)
+    preprocessed = [' '.join(vectorizer.analyze(paragraph)) for paragraph in self.paragraphs]
+    return preprocessed
 
   def lemmatized_preprocessing(self):
     vectorizer = MyCountVectorizer(lemmatize=True, stem=False)

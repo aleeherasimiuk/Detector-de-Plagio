@@ -23,6 +23,8 @@ class TestDictionaryProcessing(unittest.TestCase):
     'simple_preprocessed': "['word1', 'word2']",
     'simple_preprocessed_bigrams': "[('word1','word2'), ('word2','word3'), ('word3','word4'), ('word4','word5')]",
     'simple_preprocessed_trigrams': "[('word1','word2', 'word3'), ('word3', 'word4', 'word5'), ('word4', 'word5', 'word6'), ('word6','word7', 'word8')]",
+    'paragraphs': "['this is a paragraph', 'this is another paragraph']",
+    'preprocessed_paragraphs': "['this is a paragraph', 'this is another paragraph']",
   }
 
   document = Document(dictionary = dictionary, preprocess=False)
@@ -76,7 +78,13 @@ class TestDictionaryProcessing(unittest.TestCase):
     self.assertEqual(self.document.simple_preprocessed_trigrams, [('word1','word2', 'word3'), ('word3', 'word4', 'word5'), ('word4', 'word5', 'word6'), ('word6','word7', 'word8')])
 
   def test_preprocessed_sentences(self):
-     self.assertEqual(self.document.preprocessed_sentences, ['this is a sentence', 'this is another sentence'])
+    self.assertEqual(self.document.preprocessed_sentences, ['this is a sentence', 'this is another sentence'])
+
+  def test_paragraphs(self):
+    self.assertEqual(self.document.paragraphs, ['this is a paragraph', 'this is another paragraph'])
+  
+  def test_preprocessed_paragraphs(self):
+     self.assertEqual(self.document.preprocessed_paragraphs, ['this is a paragraph', 'this is another paragraph'])
 
 if __name__ == '__main__':
     unittest.main()
