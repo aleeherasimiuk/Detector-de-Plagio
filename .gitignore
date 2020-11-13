@@ -18,3 +18,4 @@ temas.txt
 *.log
 *.csv
 service_account_key.json
+src/test_w2v.ipynb
