@@ -1,11 +1,13 @@
 import logging
+from datetime import datetime
+today = datetime.now().date().strftime("%b-%d-%Y")
 
 fmtstr = "%(asctime)s -> [%(levelname)s]:  %(message)s"
-datestr = "%m/%d/%Y %I:%M:%S %p "
+datestr = "%I:%M:%S %p "
 
 def init_logger():
     logging.basicConfig(
-        filename="logfile.log",
+        filename="../logs/{}.log".format(today),
         level=logging.INFO,
         filemode="w",
         format=fmtstr,
