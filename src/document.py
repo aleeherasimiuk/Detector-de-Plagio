@@ -147,7 +147,8 @@ class Document():
   def preprocess_sentences(self):
     vectorizer = MyCountVectorizer(lemmatize= True, stem = False)
     sents = [' '.join(vectorizer.analyze(sentence)) for sentence in self.sentences]
-    return list(filter(is_useful_sentence, sents))
+    return #list(filter(is_useful_sentence, sents))
+    return sents
 
   def preprocessed_paragraphs(self):
     vectorizer = MyCountVectorizer(lemmatize= True, stem = False)
