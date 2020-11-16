@@ -19,3 +19,4 @@ temas.txt
 *.csv
 service_account_key.json
 src/test_w2v.ipynb
+books/
