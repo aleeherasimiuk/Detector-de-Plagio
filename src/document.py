@@ -44,15 +44,16 @@ class Document():
   tagged          = [] 
   sentences       = [] 
   named_entities  = []
+  urls            = []
 
 
-  def __init__(self, path = None, dictionary = None, preprocess = True):
+  def __init__(self, path = None, dictionary = None, preprocess = True, preprocess_list = None):
 
     if path and dictionary:
       raise DoubleSource()
 
     if path:
-      self.from_file(path, preprocess)
+      self.from_file(path, preprocess, preprocess_list=preprocess_list)
       self.initalized = True 
 
     if dictionary:
@@ -60,27 +61,39 @@ class Document():
       self.initalized = True 
 
   def from_dict(self, dict):
-    self.topic     = dict['topic']
-    self.string    = dict['string']
-    self.bigrams   = eval(dict['tokens_bigrams'])
-    self.trigrams  = eval(dict['tokens_trigrams'])
-    self.sentences = eval(dict[ 'sentences'])
-    self.title     = dict['document_title']
-    self.paragraphs          = eval(dict['paragraphs'])
-    self.stemmed_string      = eval(dict['stemmed_text'])
-    self.named_entities      = eval(dict['named_entities'])
-    self.lemmatized_string   = eval(dict['lemmatized_text'])
-    self.stemmed_bigrams     = eval(dict['stemmed_bigrams'])
-    self.stemmed_trigrams    = eval(dict['stemmed_trigrams'])
-    self.lemmatized_trigams  = eval(dict['lemmatized_trigrams'])
-    self.lemmatized_bigrams  = eval(dict['lemmatized_bigrams'])
-    self.simple_preprocessed_string   = eval(dict['simple_preprocessed'])
-    self.simple_preprocessed_bigrams  = eval(dict['simple_preprocessed_bigrams'])
-    self.simple_preprocessed_trigrams = eval(dict['simple_preprocessed_trigrams'])
-    self.preprocessed_sentences       = eval(dict['preprocessed_sentences'])
-    self.preprocessed_paragraphs      = eval(dict['preprocessed_paragraphs'])
+    self.topic     = dict['topic'] if 'topic' in dict.keys() else None
+    self.string    = dict['string'] if 'string' in dict.keys() else None
+    self.bigrams   = eval(dict['bigrams']) if 'bigrams' in dict.keys() else None
+    self.trigrams  = eval(dict['trigrams']) if 'trigrams' in dict.keys() else None
+    self.sentences = eval(dict[ 'sentences']) if 'sentences' in dict.keys() else None
+    self.title     = dict['title']  if 'title' in dict.keys() else None
+    self.paragraphs          = eval(dict['paragraphs']) if 'paragraphs' in dict.keys() else None
+    self.stemmed_string      = eval(dict['stemmed_string']) if 'stemmed_string' in dict.keys() else None
+    self.named_entities      = eval(dict['named_entities']) if 'named_entities' in dict.keys() else None
+    self.lemmatized_string   = eval(dict['lemmatized_string']) if 'lemmatized_string' in dict.keys() else None
+    self.stemmed_bigrams     = eval(dict['stemmed_bigrams']) if 'stemmed_bigrams' in dict.keys() else None
+    self.stemmed_trigrams    = eval(dict['stemmed_trigrams']) if 'stemmed_trigrams' in dict.keys() else None
+    self.lemmatized_trigams  = eval(dict['lemmatized_trigrams']) if 'lemmatized_trigrams' in dict.keys() else None
+    self.lemmatized_bigrams  = eval(dict['lemmatized_bigrams']) if 'lemmatized_bigrams' in dict.keys() else None
+    self.simple_preprocessed_string   = eval(dict['simple_preprocessed_string']) if 'simple_preprocessed_string' in dict.keys() else None
+    self.simple_preprocessed_bigrams  = eval(dict['simple_preprocessed_bigrams']) if 'simple_preprocessed_bigrams' in dict.keys() else None
+    self.simple_preprocessed_trigrams = eval(dict['simple_preprocessed_trigrams']) if 'simple_preprocessed_trigrams' in dict.keys() else None
+    self.preprocessed_sentences       = eval(dict['preprocessed_sentences']) if 'preprocessed_sentences' in dict.keys() else None
+    self.preprocessed_paragraphs      = eval(dict['preprocessed_paragraphs']) if 'preprocessed_paragraphs' in dict.keys() else None
 
-  def from_file(self, path, preprocess=True):
+  def from_paragraphs(self, paragraphs, preprocess_list):
+    self.paragraphs   = paragraphs
+    self.string       = ' '.join(paragraphs)
+    self.clean_dataset()
+    self.tokens       = self.build_tokens()
+    self.words        = self.remove_punctuation()
+    self.types        = self.remove_duplicated()
+    self.sentences    = self.build_sentences()
+    
+    
+    self.preprocess(preprocess_list=preprocess_list)
+
+  def from_file(self, path, preprocess=True, preprocess_list = None):
     self.string, self.paragraphs = self.get_text(path)
     self.clean_dataset()
     self.tokens = self.build_tokens()
@@ -91,7 +104,7 @@ class Document():
     self.title = self.get_title(path)
     
     if preprocess:
-      self.preprocess()
+      self.preprocess(preprocess_list)
 
     self.log_results(path)
 
@@ -126,23 +139,62 @@ class Document():
   def get_token_ratio(self):
     return self.type_count() / self.token_count()
 
-  def preprocess(self):
-    self.lemmatized_string            = self.lemmatized_preprocessing()
-    self.stemmed_string               = self.stemmed_preprocessing()
-    self.simple_preprocessed_string   = self.simple_preprocessing()
-    self.named_entities               = self.name_entity_recognition(include_title=True)
-    self.preprocessed_sentences       = self.preprocess_sentences()
-    self.preprocessed_paragraphs      = self.preprocessed_paragraphs()
+  def preprocess(self, preprocess_list=None):
 
-    self.bigrams                      = self.make_bigrams(self.tokens)
-    self.lemmatized_bigrams           = self.make_bigrams(self.lemmatized_string)
-    self.stemmed_bigrams              = self.make_bigrams(self.stemmed_string)
-    self.simple_preprocessed_bigrams  = self.make_bigrams(self.simple_preprocessed_string)
-    self.trigrams                     = self.make_trigrams(self.tokens)
-    self.lemmatized_trigrams          = self.make_trigrams(self.lemmatized_string)
-    self.stemmed_trigrams             = self.make_trigrams(self.stemmed_string)
-    self.simple_preprocessed_trigrams = self.make_trigrams(self.simple_preprocessed_string)
+    preprocess_list = ['lemmamtized_string', 'stemmed_string', 'simple_preprocessed_string', 'named_entities', 'preprocessed_sentences'
+    'preprocessed_paragraphs', 'bigrams', 'lemmatized_bigrams', 'stemmed_bigrams', 'simple_preprocessed_bigrams', 'trigrams','lemmatized_trigrams',
+    'stemmed_trigrams', 'simple_preprocessed_trigrams', 'urls'] if not preprocess_list else preprocess_list
 
+    if 'lemmamtized_string' in preprocess_list:
+      self.lemmatized_string = self.lemmatized_preprocessing()
+
+    if 'stemmed_string' in preprocess_list:
+      self.stemmed_string = self.stemmed_preprocessing()
+
+    if 'simple_preprocessed_string' in preprocess_list:
+      self.simple_preprocessed_string = self.simple_preprocessing()
+
+    if 'named_entities' in preprocess_list:
+      self.named_entities = self.name_entity_recognition(include_title=True)
+
+    if 'preprocessed_sentences' in preprocess_list:
+      self.preprocessed_sentences = self.preprocess_sentences()
+
+    if 'preprocessed_paragraphs' in preprocess_list:
+      self.preprocessed_paragraphs = self.preprocessed_paragraphs()
+
+    if 'bigrams' in preprocess_list:
+      self.bigrams = self.make_bigrams(self.tokens)
+
+    if 'lemmatized_bigrams' in preprocess_list:
+      self.lemmatized_bigrams = self.make_bigrams(self.lemmatized_string)
+
+    if 'stemmed_bigrams' in preprocess_list:
+      self.stemmed_bigrams = self.make_bigrams(self.stemmed_string)
+
+    if 'simple_preprocessed_bigrams' in preprocess_list:
+      self.simple_preprocessed_bigrams = self.make_bigrams(
+          self.simple_preprocessed_string)
+
+    if 'trigrams' in preprocess_list:
+      self.trigrams = self.make_trigrams(self.tokens)
+
+    if 'lemmatized_trigrams' in preprocess_list:
+      self.lemmatized_trigrams = self.make_trigrams(self.lemmatized_string)
+
+    if 'stemmed_trigrams' in preprocess_list:
+      self.stemmed_trigrams = self.make_trigrams(self.stemmed_string)
+
+    if 'simple_preprocessed_trigrams' in preprocess_list:
+      self.simple_preprocessed_trigrams = self.make_trigrams(
+          self.simple_preprocessed_string)
+
+    if 'urls' in preprocess_list:
+      self.urls = self.get_urls()
+
+  def get_urls(self):
+    is_well_formed_link = re.compile(r'^https?://.+/.+$')
+    return [url for url in word_tokenize(self.string) if is_well_formed_link.match(url)]
 
   def preprocess_sentences(self):
     vectorizer = MyCountVectorizer(lemmatize= True, stem = False)

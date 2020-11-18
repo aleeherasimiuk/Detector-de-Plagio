@@ -4,7 +4,7 @@ from util.doc2string import WordDocument
 from util.ppt2string import Presentation
 from document import Document
 import util.log as log
-log.init_logger()
+log.init_logger(path = 'logs/')
 
 class TestDoc(unittest.TestCase):
 

@@ -1,10 +1,7 @@
 import module_fix
 import unittest
-import util.log as log
 from util.data_cleaning import *
 from util.count_vectorizer import MyCountVectorizer
-
-log.init_logger()
 
 class DataCleaning(unittest.TestCase):
 

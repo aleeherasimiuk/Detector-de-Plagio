@@ -5,9 +5,9 @@ today = datetime.now().date().strftime("%b-%d-%Y")
 fmtstr = "%(asctime)s -> [%(levelname)s]:  %(message)s"
 datestr = "%I:%M:%S %p "
 
-def init_logger():
+def init_logger(path = '../logs/'):
     logging.basicConfig(
-        filename="../logs/{}.log".format(today),
+        filename="{}{}.log".format(path, today),
         level=logging.INFO,
         filemode="w",
         format=fmtstr,
