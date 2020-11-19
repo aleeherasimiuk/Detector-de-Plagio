@@ -15,7 +15,7 @@ def get_data(path):
   for i in range(len(dataframe)):
 
     serie = dataframe.loc[i]
-    document_name = serie.document_title
+    document_name = serie.title
 
     dictionary[document_name] = {}
 

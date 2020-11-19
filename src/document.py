@@ -63,23 +63,41 @@ class Document():
   def from_dict(self, dict):
     self.topic     = dict['topic'] if 'topic' in dict.keys() else None
     self.string    = dict['string'] if 'string' in dict.keys() else None
-    self.bigrams   = eval(dict['bigrams']) if 'bigrams' in dict.keys() else None
-    self.trigrams  = eval(dict['trigrams']) if 'trigrams' in dict.keys() else None
-    self.sentences = eval(dict[ 'sentences']) if 'sentences' in dict.keys() else None
+    self.bigrams   = self.eval_string(dict, 'bigrams')
+    self.trigrams  = self.eval_string(dict, 'trigrams')
+    self.sentences = self.eval_string(dict, 'sentences')
     self.title     = dict['title']  if 'title' in dict.keys() else None
-    self.paragraphs          = eval(dict['paragraphs']) if 'paragraphs' in dict.keys() else None
-    self.stemmed_string      = eval(dict['stemmed_string']) if 'stemmed_string' in dict.keys() else None
-    self.named_entities      = eval(dict['named_entities']) if 'named_entities' in dict.keys() else None
-    self.lemmatized_string   = eval(dict['lemmatized_string']) if 'lemmatized_string' in dict.keys() else None
-    self.stemmed_bigrams     = eval(dict['stemmed_bigrams']) if 'stemmed_bigrams' in dict.keys() else None
-    self.stemmed_trigrams    = eval(dict['stemmed_trigrams']) if 'stemmed_trigrams' in dict.keys() else None
-    self.lemmatized_trigams  = eval(dict['lemmatized_trigrams']) if 'lemmatized_trigrams' in dict.keys() else None
-    self.lemmatized_bigrams  = eval(dict['lemmatized_bigrams']) if 'lemmatized_bigrams' in dict.keys() else None
-    self.simple_preprocessed_string   = eval(dict['simple_preprocessed_string']) if 'simple_preprocessed_string' in dict.keys() else None
-    self.simple_preprocessed_bigrams  = eval(dict['simple_preprocessed_bigrams']) if 'simple_preprocessed_bigrams' in dict.keys() else None
-    self.simple_preprocessed_trigrams = eval(dict['simple_preprocessed_trigrams']) if 'simple_preprocessed_trigrams' in dict.keys() else None
-    self.preprocessed_sentences       = eval(dict['preprocessed_sentences']) if 'preprocessed_sentences' in dict.keys() else None
-    self.preprocessed_paragraphs      = eval(dict['preprocessed_paragraphs']) if 'preprocessed_paragraphs' in dict.keys() else None
+    self.paragraphs          = self.eval_string(dict, 'paragraphs')
+    self.stemmed_string      = self.eval_string(dict, 'stemmed_string')
+    self.named_entities      = self.eval_string(dict, 'named_entities')
+    self.lemmatized_string   = self.eval_string(dict, 'lemmatized_string')
+    self.stemmed_bigrams     = self.eval_string(dict, 'stemmed_bigrams')
+    self.stemmed_trigrams    = self.eval_string(dict, 'stemmed_trigrams')
+    self.lemmatized_trigams  = self.eval_string(dict, 'lemmatized_trigrams')
+    self.lemmatized_bigrams  = self.eval_string(dict, 'lemmatized_bigrams')
+    self.simple_preprocessed_string   = self.eval_string(dict, 'simple_preprocessed_string')
+    self.simple_preprocessed_bigrams  = self.eval_string(dict, 'simple_preprocessed_bigrams')
+    self.simple_preprocessed_trigrams = self.eval_string(dict, 'simple_preprocessed_trigrams')
+    self.preprocessed_sentences       = self.eval_string(dict, 'preprocessed_sentences')
+    self.preprocessed_paragraphs      = self.eval_string(dict, 'preprocessed_paragraphs')
+
+
+  def eval_string(self, dict, key):
+    
+    string_to_eval = '""'
+
+    if key in dict.keys():
+      string_to_eval = dict[key]
+
+    evaluated_string = None
+
+    try:
+      evaluated_string = eval(string_to_eval)
+    except:
+      evaluated_string = None
+    
+    return evaluated_string
+
 
   def from_paragraphs(self, paragraphs, preprocess_list):
     self.paragraphs   = paragraphs
@@ -141,11 +159,11 @@ class Document():
 
   def preprocess(self, preprocess_list=None):
 
-    preprocess_list = ['lemmamtized_string', 'stemmed_string', 'simple_preprocessed_string', 'named_entities', 'preprocessed_sentences'
+    preprocess_list = ['lemmatized_string', 'stemmed_string', 'simple_preprocessed_string', 'named_entities', 'preprocessed_sentences'
     'preprocessed_paragraphs', 'bigrams', 'lemmatized_bigrams', 'stemmed_bigrams', 'simple_preprocessed_bigrams', 'trigrams','lemmatized_trigrams',
     'stemmed_trigrams', 'simple_preprocessed_trigrams', 'urls'] if not preprocess_list else preprocess_list
 
-    if 'lemmamtized_string' in preprocess_list:
+    if 'lemmatized_string' in preprocess_list:
       self.lemmatized_string = self.lemmatized_preprocessing()
 
     if 'stemmed_string' in preprocess_list:
