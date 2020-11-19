@@ -10,7 +10,7 @@ nlp = es_core_news_sm.load()
 nlp.add_pipe(__lemmatize, after="tagger")
 stemmer = SnowballStemmer('spanish')
 __stop_words = stopwords.words('spanish')
-__stop_words.extend(['mejor', 'primer', 'igual', 'principal', 'total', 'segun', 'según', 'iguales', 'describa', 'hernan', 'borre', 'profesor', 'alumno', 'universidad', 'facultad','regional', 'buenos', 'aires', 'utn'])
+__stop_words.extend(['mejor', 'primer', 'igual', 'principal', 'total', 'segun', 'según', 'iguales', 'describa', 'hernan', 'borre', 'profesor', 'alumno', 'universidad', 'facultad','regional', 'buenos', 'aires', 'utn', 'www'])
 
 
 def delete_symbols(string):
