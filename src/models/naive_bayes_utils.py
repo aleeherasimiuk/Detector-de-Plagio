@@ -113,13 +113,39 @@ class NaiveBayes():
     features_by_class_to_save.to_csv('{}features_by_class.nv'.format(path))
     class_probabilities_to_save.to_csv('{}class_probabilities.nv'.format(path))
 
+    
+
   def load_model(self, path):
-    self.frequencies = pd.read_csv('{}frequencies.nv'.format(path)).to_list()
-    self.classes = pd.read_csv('{}classes.nv'.format(path)).to_list()
-    self.features_by_class = pd.read_csv('{}features_by_class.nv'.format(path)).to_list()
-    self.class_probabilities = pd.read_csv('{}}class_probabilities.nv'.format(path)).to_list()
-    self.accuracy = pd.read_csv('{}accuracy.nv'.format(path)).to_dict()['accuracy']
-    self.fail_ratio = pd.read_csv('{}accuracy.nv'.format(path)).to_dict()['failed']
+
+    self.frequencies = {}
+    dataframe = pd.read_csv('{}frequencies.nv'.format(path))
+    for i in range(dataframe.shape[0]):
+      self.frequencies[dataframe.loc[i][0]] = eval(dataframe.loc[i][1])
+
+    self.classes = {}
+    dataframe = pd.read_csv('{}classes.nv'.format(path))
+    for i in range(dataframe.shape[0]):
+      self.classes[dataframe.loc[i][0]] = dataframe.loc[i][1]
+    self.classes = list(self.classes.values())
+
+    self.features_by_class = {}
+    dataframe = pd.read_csv('{}features_by_class.nv'.format(path))
+    for i in range(dataframe.shape[0]):
+      self.features_by_class[dataframe.loc[i][0]] = dataframe.loc[i][1]
+
+    self.class_probabilities = {}
+    dataframe = pd.read_csv('{}class_probabilities.nv'.format(path))
+    for i in range(dataframe.shape[0]):
+      self.class_probabilities[dataframe.loc[i][0]] = dataframe.loc[i][1]
+
+    dataframe = pd.read_csv('{}accuracy.nv'.format(path))
+    self.accuracy = dataframe.loc[0][1]
+
+    dataframe = pd.read_csv('{}accuracy.nv'.format(path))
+    self.fail_ratio = dataframe.loc[1][1]
+
+    self.total_features = get_total_features(self.frequencies, self.classes)
+
 
   def topic(self, string):
     predicted_probabilities = {}

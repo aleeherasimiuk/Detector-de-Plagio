@@ -159,7 +159,7 @@ class Document():
 
   def preprocess(self, preprocess_list=None):
 
-    preprocess_list = ['lemmatized_string', 'stemmed_string', 'simple_preprocessed_string', 'named_entities', 'preprocessed_sentences'
+    preprocess_list = ['lemmatized_string', 'stemmed_string', 'simple_preprocessed_string', 'named_entities', 'preprocessed_sentences',
     'preprocessed_paragraphs', 'bigrams', 'lemmatized_bigrams', 'stemmed_bigrams', 'simple_preprocessed_bigrams', 'trigrams','lemmatized_trigrams',
     'stemmed_trigrams', 'simple_preprocessed_trigrams', 'urls'] if not preprocess_list else preprocess_list
 
@@ -179,7 +179,7 @@ class Document():
       self.preprocessed_sentences = self.preprocess_sentences()
 
     if 'preprocessed_paragraphs' in preprocess_list:
-      self.preprocessed_paragraphs = self.preprocessed_paragraphs()
+      self.preprocessed_paragraphs = self.preprocess_paragraphs()
 
     if 'bigrams' in preprocess_list:
       self.bigrams = self.make_bigrams(self.tokens)
@@ -217,10 +217,10 @@ class Document():
   def preprocess_sentences(self):
     vectorizer = MyCountVectorizer(lemmatize= True, stem = False)
     sents = [' '.join(vectorizer.analyze(sentence)) for sentence in self.sentences]
-    return #list(filter(is_useful_sentence, sents))
+    #return #list(filter(is_useful_sentence, sents))
     return sents
 
-  def preprocessed_paragraphs(self):
+  def preprocess_paragraphs(self):
     vectorizer = MyCountVectorizer(lemmatize= True, stem = False)
     preprocessed = [' '.join(vectorizer.analyze(paragraph)) for paragraph in self.paragraphs]
     return preprocessed
