@@ -91,3 +91,8 @@ https://zenodo.org/record/1410403
 https://github.com/aitoralmeida/spanish_word2vec
 https://morelab.deusto.es/datasets/info/word2vec-models-for-the-spanish-language/
 https://towardsdatascience.com/understanding-nlp-word-embeddings-text-vectorization-1a23744f7223
+
+
+# Loading animation
+
+https://stackoverflow.com/questions/22029562/python-how-to-make-simple-animated-loading-while-process-is-running
