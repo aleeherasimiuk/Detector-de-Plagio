@@ -30,8 +30,30 @@ questions = [
     'ejemplo distinto real si conocer invente experiencia',
     'mismo aproximadamente porcentaje fin respecto usuario',
     'relacionar ley pareto masa largo cola',
-    'dar ejemplo internacional empresa producto servicio modelo largo cola'
+    'dar ejemplo internacional empresa producto servicio modelo largo cola',
+    'dar ejemplo internacional empresa producto modelo largo cola',
   ]
+
+not_names = [
+  'Anderson',
+  'Netflix',
+  'Chris Anderson',
+  'Amazon',
+  'Pareto',
+  'Kotler',
+  'Rifkin',
+  'Coase',
+  'Marketing',
+  'Borré',
+  'Hernan Borré',
+  'Prince',
+  'Alejandro Prince',
+  'Dr. Alejandro Prince',
+  'Spotify',
+  'Newton',
+  'Bass',
+  'Frank Bass'
+]
 
 def color_print(text, color):
   click.echo(click.style(text, fg=color))
@@ -46,8 +68,8 @@ def get_color(n):
 def is_useful(topic, document):
   return document.topic == topic
 
-def is_useful_text(lemmatized_string, original_string):
-  return lemmatized_string not in questions and len(word_tokenize(lemmatized_string)) > 5 and '?' not in original_string and '¿' not in original_string
+def is_useful_text(lemmatized_string, original_string):                                                                                      ## Los # indican que ahi hay una imagen
+  return lemmatized_string not in questions and len(word_tokenize(lemmatized_string)) > 5 and '?' not in original_string and '¿' not in original_string and '###' not in original_string
 
 def is_pdf(document):
   return fm.is_pdf(document.title)
@@ -55,11 +77,6 @@ def is_pdf(document):
 def loading():
   t = Process(target=prompt.animate)
   t.start()
-  
-  #t = threading.Thread(target=prompt.animate)
-  #t.daemon=True
-  #t.start()
-
   return t
 
 def process_document(path):
@@ -105,7 +122,7 @@ def filter_documents(scrap, book, topic, keywords):
 
 
 def evaluate(doc_eval, word_vectors, filtered_documents, filtered_web_texts, filtered_books):
-  treshold = 1.65
+  treshold = 2.1
 
   paragraphs = []
   sentences = []
@@ -116,7 +133,7 @@ def evaluate(doc_eval, word_vectors, filtered_documents, filtered_web_texts, fil
     if is_pdf(document) or is_pdf(doc_eval):
       for i, sentence in enumerate(doc_eval.preprocessed_sentences):
         for j, other_sentence in enumerate(document.preprocessed_sentences):
-          if is_useful_text(sentence, doc_eval.sentences[i]):
+          if is_useful_text(sentence, doc_eval.sentences[i]) and is_useful_text(other_sentence, document.sentences[j]):
             distance = word_vectors.wmdistance(sentence, other_sentence)
             if distance <= treshold:
               sentences.append(
@@ -125,7 +142,7 @@ def evaluate(doc_eval, word_vectors, filtered_documents, filtered_web_texts, fil
     else:
       for i, paragraph in enumerate(doc_eval.preprocessed_paragraphs):
         for j, other_paragraph in enumerate(document.preprocessed_paragraphs):
-          if is_useful_text(paragraph, doc_eval.paragraphs[i]):
+          if is_useful_text(paragraph, doc_eval.paragraphs[i]) and is_useful_text(other_paragraph, document.paragraphs[j]):
             distance = word_vectors.wmdistance(paragraph, other_paragraph)
             if distance <= treshold:
               paragraphs.append(
@@ -135,21 +152,23 @@ def evaluate(doc_eval, word_vectors, filtered_documents, filtered_web_texts, fil
   for scrapped in filtered_web_texts:
     for i, paragraph in enumerate(scrapped.preprocessed_paragraphs):
       for j, other_paragraph in enumerate(doc_eval.preprocessed_paragraphs):
-        distance = word_vectors.wmdistance(paragraph, other_paragraph)
-        if distance <= treshold:
-          paragraphs.append(
-            (scrapped, j, i, distance)
-          )
+        if is_useful_text(other_paragraph, doc_eval.paragraphs[j]):
+          distance = word_vectors.wmdistance(paragraph, other_paragraph)
+          if distance <= treshold:
+            paragraphs.append(
+              (scrapped, j, i, distance)
+            )
 
 
   for book in filtered_books:
     for i, sentence in enumerate(book.preprocessed_sentences):
       for j, other_sentence in enumerate(doc_eval.preprocessed_sentences):
-        distance = word_vectors.wmdistance(sentence, other_sentence)
-        if distance <= treshold:
-          sentences.append(
-            (book, j, i, distance)
-          )
+        if is_useful_text(other_sentence, doc_eval.sentences[j]):
+          distance = word_vectors.wmdistance(sentence, other_sentence)
+          if distance <= treshold:
+            sentences.append(
+              (book, j, i, distance)
+            )
 
   paragraphs_percentage = (len(paragraphs) * 100) / paragraph_count
   sentences_percentage = (len(sentences) * 100) / sentence_count
@@ -163,7 +182,7 @@ def evaluate(doc_eval, word_vectors, filtered_documents, filtered_web_texts, fil
 @click.option('--path', help='Path del documento a evaluar.')
 @click.option('--scrap', is_flag=True, prompt='¿Desea scrappear la web en busca de plagio?')
 @click.option('--book', is_flag=True, prompt='¿Desea comparar con otros libros en busca de plagio?')
-def hello(path, scrap, book):
+def start(path, scrap, book):
   click.clear()
 
   click.echo('Procesando documento: {}'.format(path))
@@ -190,8 +209,14 @@ def hello(path, scrap, book):
   if book:
     click.echo('\tLibros: {}'.format(len(books)))
 
+  click.echo('\n\nPotenciales nombres del alumno:\n')
 
-  click.echo('Analizando el tema del texto:\n')
+  for name in set(document_to_evaluate.named_entities):
+    if name not in not_names:
+      click.echo('\t- {}'.format(name))
+
+
+  click.echo('\n\nAnalizando el tema del texto:\n')
   topic, accuracy, keywords, p = classificate(document_to_evaluate)
 
   click.echo('Naive Bayes -> {}  [{}% de efectividad]\n'.format(topic, round(accuracy, 2)))
@@ -264,4 +289,4 @@ def hello(path, scrap, book):
     color_print('-'*150, color)
 
 if __name__ == '__main__':
-  hello()
+  start()
