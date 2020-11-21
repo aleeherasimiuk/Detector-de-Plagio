@@ -37,6 +37,7 @@ Librerías utilizadas:
 - Numpy
 - Scikit Learn
 - Matplotlib
+- Jupyter Notebooks
 
 
 
