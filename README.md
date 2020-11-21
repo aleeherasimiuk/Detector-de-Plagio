@@ -1,4 +1,43 @@
-# UTN_NLP_PLAGIO
+# Detector de Plagio
+
+Trabajo Práctico realizado para la materia Procesamiento del Lenguaje Natural, de UTN-FRBA a cargo de Mg. Ing. Hernán Borré.
+
+Objetivos:
+
+- Detectar plagio entre trabajos prácticos de una materia
+- Detectar plagio entre un trabajo práctico y la Web
+- Detectar plagio entre un trabajo práctico y libros de la materia.
+
+Herramientas y conceptos utilizados:
+
+- Lemmatize
+- Stemming
+- Stop Words
+- Latent Dirichlet Allocation
+- Naive Bayes for Text Classification
+- Word Embeddings
+- Word Mover's Distance
+- Named Entity Recognition
+
+Librerías utilizadas:
+
+- Textract
+- Gensim
+- Spacy
+- NLTK
+- Click
+- Unittest
+- Multiprocessing
+- Pdfminer
+- Python-pptx
+- Docx
+- Logging
+- Firebase
+- Pandas
+- Numpy
+- Scikit Learn
+- Matplotlib
+
 
 
 ## Read Word Document: 
@@ -46,7 +85,6 @@
 ## Count Vectorizer
 
 - https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html#sklearn.feature_extraction.text.CountVectorizer.build_analyzer
-
 
 
 ## Tokenizing Sentences
