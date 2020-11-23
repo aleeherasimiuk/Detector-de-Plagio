@@ -18,6 +18,12 @@ Herramientas y conceptos utilizados:
 - Word Embeddings
 - Word Mover's Distance
 - Named Entity Recognition
+- Part of Speech
+- Regular Expressions
+- Unigrams/Bigrams/Trigrams
+- Web Scrapping
+- Topic Modeling
+- Text Similarity
 
 Librerías utilizadas:
 
