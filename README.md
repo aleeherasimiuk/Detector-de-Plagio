@@ -24,6 +24,10 @@ Herramientas y conceptos utilizados:
 - Web Scrapping
 - Topic Modeling
 - Text Similarity
+- Text Extracting
+- Text Preprocessing
+- Unit testing
+
 
 Librerías utilizadas:
 
