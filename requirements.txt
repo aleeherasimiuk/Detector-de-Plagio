@@ -1,0 +1,154 @@
+argcomplete==1.10.0
+argon2-cffi @ file:///tmp/build/80754af9/argon2-cffi_1596828493937/work
+async-generator==1.10
+attrs @ file:///tmp/build/80754af9/attrs_1600298409949/work
+autopep8 @ file:///tmp/build/80754af9/autopep8_1596578164842/work
+backcall==0.2.0
+beautifulsoup4==4.8.0
+bitarray==1.6.0
+bleach @ file:///tmp/build/80754af9/bleach_1600439572647/work
+blis==0.4.1
+brotlipy==0.7.0
+bs4==0.0.1
+CacheControl==0.12.6
+cachetools==4.1.1
+catalogue==1.0.0
+certifi==2020.6.20
+cffi @ file:///tmp/build/80754af9/cffi_1600699146221/work
+chardet==3.0.4
+click==7.1.2
+colorama==0.4.4
+cryptography @ file:///tmp/build/80754af9/cryptography_1601046815590/work
+cycler==0.10.0
+cymem==2.0.3
+decorator==4.4.2
+defusedxml==0.6.0
+docx2txt==0.8
+EbookLib==0.17.1
+entrypoints==0.3
+es-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/es_core_news_sm-2.3.1/es_core_news_sm-2.3.1.tar.gz
+es-lemmatizer==0.2.1
+extract-msg==0.23.1
+filetype==1.0.7
+firebase-admin==4.4.0
+funcy==1.15
+future==0.18.2
+gensim==3.8.3
+google-api-core==1.23.0
+google-api-python-client==1.12.5
+google-auth==1.23.0
+google-auth-httplib2==0.0.4
+google-cloud-core==1.4.3
+google-cloud-firestore==1.9.0
+google-cloud-storage==1.32.0
+google-crc32c==1.0.0
+google-resumable-media==1.1.0
+googleapis-common-protos==1.52.0
+grpcio==1.33.2
+httplib2==0.18.1
+idna @ file:///tmp/build/80754af9/idna_1593446292537/work
+IMAPClient==2.1.0
+importlib-metadata @ file:///tmp/build/80754af9/importlib-metadata_1593446406207/work
+iniconfig==1.1.1
+ipykernel @ file:///tmp/build/80754af9/ipykernel_1596207638929/work/dist/ipykernel-5.3.4-py3-none-any.whl
+ipython @ file:///tmp/build/80754af9/ipython_1598883821407/work
+ipython-genutils==0.2.0
+jedi @ file:///tmp/build/80754af9/jedi_1598371611696/work
+Jinja2==2.11.2
+joblib @ file:///tmp/build/80754af9/joblib_1594236160679/work
+json5==0.9.5
+jsonschema==3.2.0
+jupyter-client @ file:///tmp/build/80754af9/jupyter_client_1594826976318/work
+jupyter-core==4.6.3
+jupyterlab==2.2.9
+jupyterlab-pygments @ file:///tmp/build/80754af9/jupyterlab_pygments_1600976720582/work
+jupyterlab-server @ file:///tmp/build/80754af9/jupyterlab_server_1594164409481/work
+kiwisolver==1.2.0
+lxml==4.6.0
+MarkupSafe==1.1.1
+matplotlib==3.3.2
+mistune==0.8.4
+mkl-fft==1.2.0
+mkl-random==1.1.1
+mkl-service==2.3.0
+msgpack==1.0.0
+murmurhash==1.0.2
+nb-conda-kernels @ file:///tmp/build/80754af9/nb_conda_kernels_1600445338328/work
+nbclient @ file:///tmp/build/80754af9/nbclient_1601059699549/work
+nbconvert @ file:///tmp/build/80754af9/nbconvert_1601069204803/work
+nbformat==5.0.7
+nest-asyncio @ file:///tmp/build/80754af9/nest-asyncio_1600977170767/work
+nltk @ file:///tmp/build/80754af9/nltk_1592496090529/work
+notebook @ file:///tmp/build/80754af9/notebook_1596838629813/work
+numexpr==2.7.1
+numpy @ file:///tmp/build/80754af9/numpy_and_numpy_base_1596233721170/work
+olefile==0.46
+packaging==20.4
+pandas==1.1.3
+pandocfilters==1.4.2
+parso==0.7.0
+pdfminer.six==20181108
+pexpect==4.8.0
+pickleshare==0.7.5
+Pillow==8.0.0
+plac==1.1.3
+pluggy==0.13.1
+preshed==3.0.2
+prometheus-client==0.8.0
+prompt-toolkit @ file:///tmp/build/80754af9/prompt-toolkit_1598885458782/work
+protobuf==3.13.0
+ptyprocess==0.6.0
+py==1.9.0
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+pycodestyle==2.6.0
+pycparser @ file:///tmp/build/80754af9/pycparser_1594388511720/work
+pycryptodome==3.9.8
+pyemd==0.5.1
+Pygments @ file:///tmp/build/80754af9/pygments_1600458456400/work
+pyLDAvis==2.1.2
+pyOpenSSL @ file:///tmp/build/80754af9/pyopenssl_1594392929924/work
+pyparsing==2.4.7
+pyrsistent @ file:///tmp/build/80754af9/pyrsistent_1600141720057/work
+PySocks==1.7.1
+pytest==6.1.1
+python-dateutil==2.8.1
+python-docx==0.8.10
+python-pptx==0.6.18
+pytz==2020.1
+pyzmq==19.0.2
+regex @ file:///tmp/build/80754af9/regex_1596829684054/work
+requests @ file:///tmp/build/80754af9/requests_1592841827918/work
+rsa==4.6
+scikit-learn==0.23.2
+scipy==1.5.3
+seaborn==0.11.0
+Send2Trash==1.5.0
+six==1.15.0
+sklearn==0.0
+smart-open==3.0.0
+sortedcontainers==2.2.2
+soupsieve==2.0.1
+spacy==2.3.2
+SpeechRecognition==3.8.1
+srsly==1.0.2
+terminado==0.8.3
+testpath==0.4.4
+textract==1.6.3
+thinc==7.4.1
+threadpoolctl==2.1.0
+toml @ file:///tmp/build/80754af9/toml_1592853716807/work
+tornado==6.0.4
+tqdm @ file:///tmp/build/80754af9/tqdm_1600709023549/work
+traitlets @ file:///tmp/build/80754af9/traitlets_1600712396819/work
+tzlocal==1.5.1
+ujson==4.0.1
+uritemplate==3.0.1
+urllib3 @ file:///tmp/build/80754af9/urllib3_1597086586889/work
+wasabi==0.8.0
+wcwidth @ file:///tmp/build/80754af9/wcwidth_1593447189090/work
+webencodings==0.5.1
+wordcloud==1.8.0
+xlrd==1.2.0
+XlsxWriter==1.3.7
+zipp==3.1.0
