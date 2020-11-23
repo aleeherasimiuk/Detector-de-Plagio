@@ -27,6 +27,8 @@ Herramientas y conceptos utilizados:
 - Text Extracting
 - Text Preprocessing
 - Unit testing
+- Persistent data
+- Multiprocessing
 
 
 Librerías utilizadas:
