@@ -9,6 +9,7 @@ test_lda.ipynb
 Enunciado.docx
 unlabeled_dataset/
 labeled_dataset/
+unit_testing_documents/
 test_dataset/
 lda_gensim.ipynb
 test_lda.ipynb
